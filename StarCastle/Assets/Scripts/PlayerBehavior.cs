@@ -97,7 +97,7 @@ public class PlayerBehavior : MonoBehaviour
     {   
         for(int i = 0; i < number_of_bullets; i++)
         {
-            _aSource.PlayOneShot(_shootClip, Random.Range(0.8f, 1f));
+            _aSource.PlayOneShot(_shootClip, Random.Range(0.6f, 0.8f));
 
             BulletBehavior newBullet = Instantiate(_bullet, transform.GetChild(0).position, transform.rotation);
             newBullet.Initialize(transform.up.normalized, _bullet_lifetime, _bullet_speed);

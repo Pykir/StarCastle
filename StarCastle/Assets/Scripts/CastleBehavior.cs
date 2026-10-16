@@ -6,6 +6,8 @@ using UnityEngine;
 public class CastleBehavior : MonoBehaviour
 {
     [HideInInspector] public HealthComponent _health;
+    private AudioSource _aSource;
+    [SerializeField] private AudioClip _missileLaunchClip;
 
     [SerializeField] public PlayerBehavior _enemyPlayer;
     private Rigidbody2D _target;
@@ -66,6 +68,7 @@ public class CastleBehavior : MonoBehaviour
     void Awake()
     {
         _health = GetComponent<HealthComponent>();
+        _aSource = GetComponent<AudioSource>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -89,6 +92,8 @@ public class CastleBehavior : MonoBehaviour
 
     void SpawnMissile(Rigidbody2D target)
     {
+        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
+
         MissileBehavior newMissile = Instantiate(_missile, transform.position, Quaternion.identity);
         newMissile.Initialize(target);
         newMissile.GetComponent<HealthComponent>().Died += DecrementMissileCount;
