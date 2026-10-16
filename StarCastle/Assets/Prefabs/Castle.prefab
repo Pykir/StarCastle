@@ -162,6 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleBehavior
   _health: {fileID: 0}
+  _cannonFireClip: {fileID: 8300000, guid: cbb05faf3cf9c40a4b5531888ea1daa5, type: 3}
   _missileLaunchClip: {fileID: 8300000, guid: 4cc08bacaa7854e3398a074ecd19e3f1, type: 3}
   _enemyPlayer: {fileID: 0}
   _shield: {fileID: 4955980263600822794, guid: c7fc15a9f297b499fb7326e228ba66bf, type: 3}

@@ -7,6 +7,7 @@ public class CastleBehavior : MonoBehaviour
 {
     [HideInInspector] public HealthComponent _health;
     private AudioSource _aSource;
+    [SerializeField] private AudioClip _cannonFireClip;
     [SerializeField] private AudioClip _missileLaunchClip;
 
     [SerializeField] public PlayerBehavior _enemyPlayer;
@@ -154,6 +155,8 @@ public class CastleBehavior : MonoBehaviour
             FiringBullet = false;
             yield break;
         }
+        
+        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
         
         BulletBehavior newBullet = Instantiate(_bullet, transform.position, Quaternion.identity);
         newBullet.Initialize(_enemyPlayer.GetComponent<Rigidbody2D>().position - (Vector2)transform.position, _bullet_lifetime, _bullet_speed);
