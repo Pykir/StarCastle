@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -13,6 +14,9 @@ public class PlayerBehavior : MonoBehaviour
 
     private Rigidbody2D _rb;
     private ContactRules _cr;
+    private AudioSource _aSource;
+    [SerializeField] private AudioClip _shootClip;
+
     [HideInInspector] public HealthComponent _health;
 
     [SerializeField] private float _max_speed = 4.0f;
@@ -38,6 +42,7 @@ public class PlayerBehavior : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _cr = GetComponent<ContactRules>();
         _health = GetComponent<HealthComponent>();
+        _aSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -89,9 +94,11 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     private IEnumerator FireBullets(int number_of_bullets)
-    {
+    {   
         for(int i = 0; i < number_of_bullets; i++)
         {
+            _aSource.PlayOneShot(_shootClip, Random.Range(0.8f, 1f));
+
             BulletBehavior newBullet = Instantiate(_bullet, transform.GetChild(0).position, transform.rotation);
             newBullet.Initialize(transform.up.normalized, _bullet_lifetime, _bullet_speed);
             yield return new WaitForSeconds(_bullet_cd);

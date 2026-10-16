@@ -6,7 +6,9 @@ using UnityEngine.UIElements;
 
 public class ExplosionComponent : MonoBehaviour
 {
-    [SerializeField] private ContactRules _cr;
+    private ContactRules _cr;
+    private AudioSource _aSource;
+    [SerializeField] private AudioClip _explosionClip;
 
     [SerializeField] private int _damage = 1;
     [SerializeField] private float _radius = 1;
@@ -18,6 +20,7 @@ public class ExplosionComponent : MonoBehaviour
     public void Awake()
     {
         _cr = GetComponent<ContactRules>();
+        _aSource = GetComponent<AudioSource>();
         GetComponentInChildren<SpriteRenderer>().transform.localScale = Vector3.one * _radius * 2f;
     }
 
@@ -51,6 +54,11 @@ public class ExplosionComponent : MonoBehaviour
 
     public void DetonateCircle(float radius)
     {
+        _aSource.pitch = Random.Range(0.9f, 1.1f);
+        _aSource.volume = Random.Range(0.8f, 1.0f);
+        _aSource.clip = _explosionClip;
+        _aSource.Play();
+
         Collider2D[] nearby = Physics2D.OverlapCircleAll(transform.position, radius);
         HashSet<HealthComponent> uniqueHits = new HashSet<HealthComponent>();
         foreach (Collider2D other in nearby)

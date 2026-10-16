@@ -3,6 +3,7 @@ using UnityEngine;
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject PausePanel;
+    private AudioSource menuAudioSource;
 
     void Awake()
     {
@@ -13,6 +14,9 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.Pause += onPause;
         onPause(GameManager.Instance.GameState);
+
+        menuAudioSource = GetComponent<AudioSource>();
+        menuAudioSource.ignoreListenerPause = true;
     }
 
     // Update is called once per frame

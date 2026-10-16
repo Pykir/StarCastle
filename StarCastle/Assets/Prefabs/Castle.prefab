@@ -212,4 +212,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31cc507924fa64a2885d35d56ee3da49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestructionComponent
-  _destructionEffect: {fileID: 0}
+  _destructionEffect: {fileID: 1751308725856288486, guid: ef9d98e0650dd4fb4a51297e8a14205a, type: 3}

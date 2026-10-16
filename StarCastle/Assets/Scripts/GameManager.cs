@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
         {
             _game_state = value;
             Time.timeScale = value == Utilities.GameState.Play ? 1f : 0f;
+            AudioListener.pause = value == Utilities.GameState.Pause;
             Pause?.Invoke(GameState);
         }
     }
@@ -138,7 +139,6 @@ public class GameManager : MonoBehaviour
         score += 1000;
         _gameUI.SetScore(score);
         difficulty++;
-        ClearRound();
         StartCoroutine(RespawnCastle());
     }
 
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator RespawnCastle()
     {
         yield return new WaitForSecondsRealtime(_respawn_time_castle);
-
+        ClearRound();
         SpawnCastle();
     }
 
