@@ -6,7 +6,7 @@ public class ShieldCircleBehavior : MonoBehaviour
 {
     [SerializeField] private GameObject _shieldseg;
     private MissileBehavior _mine;
-    private Rigidbody2D _mineTarget;
+    [HideInInspector] public Rigidbody2D _mineTarget;
     
     private int _shapeSides = 6;
     private float _radius = 1.0f;
@@ -141,7 +141,7 @@ public class ShieldCircleBehavior : MonoBehaviour
         mine.transform.localScale = _mine.transform.localScale;
 
         mine.ActivateMine();
-        mine.GetComponent<BulletBehavior>().Initialize(Vector3.zero, _mineLifetime, 0f);
+        mine.GetComponent<BulletBehavior>().Initialize(_mineTarget.transform.position - mine.transform.position, _mineLifetime, 0f);
     }
 
     void OnSegmentDied(HealthComponent segment)

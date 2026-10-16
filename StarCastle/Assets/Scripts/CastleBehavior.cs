@@ -111,6 +111,13 @@ public class CastleBehavior : MonoBehaviour
         {
             missile.Initialize(_target);
         }
+
+        ShieldCircleBehavior[] shields = FindObjectsByType<ShieldCircleBehavior>(FindObjectsSortMode.None);
+
+        foreach (ShieldCircleBehavior shield in shields)
+        {
+            shield._mineTarget = _target;
+        }
     }
 
     void SpawnShield(float radius)

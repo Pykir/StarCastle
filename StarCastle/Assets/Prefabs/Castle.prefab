@@ -182,8 +182,9 @@ MonoBehaviour:
   _bullet_speed_increment: 0.2
   _max_missiles_multiplier: 0.5
   _starting_missiles_count: 1
-  _mine_frequency_multiplier: 0.04
+  _mine_frequency_multiplier: 0.05
   _starting_mine_frequency: 0.1
+  _mine_lifetime: 8
 --- !u!114 &-1849068065298537512
 MonoBehaviour:
   m_ObjectHideFlags: 0
