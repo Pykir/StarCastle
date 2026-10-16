@@ -22,6 +22,7 @@ public class MissileBehavior : MonoBehaviour
         {
             attached = true;
             _rb.simulated = false;
+            GetComponent<Screenwrap>().enabled = false;
         } 
     }
 
@@ -34,6 +35,7 @@ public class MissileBehavior : MonoBehaviour
     {
         attached = false;
         _rb.simulated = true;
+        GetComponent<Screenwrap>().enabled = true;
     }
 
     void FixedUpdate()

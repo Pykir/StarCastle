@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     private PlayerBehavior current_player;
     private CastleBehavior current_castle;
     private int score = 0;
-    private int difficulty = 0;
+    [SerializeField] private int difficulty = 0;
 
     void Awake()
     {
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
     void StartGame()
     {
         score = 0;
-        difficulty = 0;
+        //difficulty = 0;
         SpawnPlayer();
         SpawnCastle();
     }
