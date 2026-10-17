@@ -91,15 +91,7 @@ public class CastleBehavior : MonoBehaviour
         if(current_missile_count < max_missile_count) StartCoroutine(MissileLoop(3));
     }
 
-    void SpawnMissile(Rigidbody2D target)
-    {
-        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
-
-        MissileBehavior newMissile = Instantiate(_missile, transform.position, Quaternion.identity);
-        newMissile.Initialize(target);
-        newMissile.GetComponent<HealthComponent>().Died += DecrementMissileCount;
-    }
-
+    
     void SpawnMineAt(Vector3 position, Rigidbody2D target)
     {
         MissileBehavior newMissile = Instantiate(_mine, position, Quaternion.identity);
@@ -156,8 +148,8 @@ public class CastleBehavior : MonoBehaviour
             yield break;
         }
         
-        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
-        
+        _aSource.PlayOneShot(_cannonFireClip, Random.Range(0.8f, 1f));
+
         BulletBehavior newBullet = Instantiate(_bullet, transform.position, Quaternion.identity);
         newBullet.Initialize(_enemyPlayer.GetComponent<Rigidbody2D>().position - (Vector2)transform.position, _bullet_lifetime, _bullet_speed);
         FiringBullet = false;
@@ -176,4 +168,14 @@ public class CastleBehavior : MonoBehaviour
     {
         current_missile_count--;
     }
+
+    void SpawnMissile(Rigidbody2D target)
+    {
+        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
+
+        MissileBehavior newMissile = Instantiate(_missile, transform.position, Quaternion.identity);
+        newMissile.Initialize(target);
+        newMissile.GetComponent<HealthComponent>().Died += DecrementMissileCount;
+    }
+
 }

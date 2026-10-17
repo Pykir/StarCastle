@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,11 +17,11 @@ public class GameManager : MonoBehaviour
             _game_state = value;
             Time.timeScale = value == Utilities.GameState.Play ? 1f : 0f;
             AudioListener.pause = value == Utilities.GameState.Pause;
-            Pause?.Invoke(GameState);
+            State?.Invoke(GameState);
         }
     }
     private InputAction pauseAction;
-    public event Action<Utilities.GameState> Pause;
+    public event Action<Utilities.GameState> State;
 
     [SerializeField] private GameUI _gameUI;
     [SerializeField] private PlayerBehavior _playerShip;
@@ -111,6 +112,13 @@ public class GameManager : MonoBehaviour
         _spawnPoint = health.transform.position;
         player_lives--;
 
+        if (player_lives == 0)
+        {
+            GameState = Utilities.GameState.GameOver;
+            ClearRound();
+            return;
+        }
+
         _gameUI.SetHealth(0);
         _gameUI.SetLives(player_lives);
 
@@ -137,6 +145,7 @@ public class GameManager : MonoBehaviour
     void CastleDestroyed(HealthComponent health)
     {
         score += 1000;
+        player_lives++;
         _gameUI.SetScore(score);
         difficulty++;
         StartCoroutine(RespawnCastle());

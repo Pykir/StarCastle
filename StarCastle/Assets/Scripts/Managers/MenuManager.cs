@@ -12,8 +12,8 @@ public class MenuManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        GameManager.Instance.Pause += onPause;
-        onPause(GameManager.Instance.GameState);
+        GameManager.Instance.State += onStateChange;
+        onStateChange(GameManager.Instance.GameState);
 
         menuAudioSource = GetComponent<AudioSource>();
         menuAudioSource.ignoreListenerPause = true;
@@ -25,9 +25,11 @@ public class MenuManager : MonoBehaviour
         
     }
 
-    void onPause(Utilities.GameState gameState)
+    void onStateChange(Utilities.GameState gameState)
     {
-        PausePanel.SetActive(gameState == Utilities.GameState.Pause);
+        bool isPaused = gameState == Utilities.GameState.Pause;
+        PausePanel.SetActive(isPaused);
+        Cursor.visible = isPaused;
     }
 
     public void ResumeGame()
@@ -41,6 +43,6 @@ public class MenuManager : MonoBehaviour
     void OnDestroy()
     {
         if (GameManager.Instance != null)
-            GameManager.Instance.Pause -= onPause;
+            GameManager.Instance.State -= onStateChange;
     }
 }
