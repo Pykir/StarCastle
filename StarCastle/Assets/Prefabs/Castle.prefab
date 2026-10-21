@@ -195,7 +195,7 @@ MonoBehaviour:
   _starting_barrage_interval: 7
   _barrage_interval_decrement: 0.4
   _barrage_minimum_interval: 2
-  current_time_between_barrages: 0
+  current_time_between_barrages: 0.3
 --- !u!114 &-1849068065298537512
 MonoBehaviour:
   m_ObjectHideFlags: 0

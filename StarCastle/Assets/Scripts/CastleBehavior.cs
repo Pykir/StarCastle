@@ -203,7 +203,7 @@ public class CastleBehavior : MonoBehaviour
 
         for (int i = 0; i < current_barrage_count; i++)
         {
-            StartCoroutine(FireBarrage(_target, current_time_between_barrages));
+            StartCoroutine(FireBarrage(_target, i * current_time_between_barrages));
         }
 
         FiringBarrage = false;

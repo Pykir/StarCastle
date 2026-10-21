@@ -82,7 +82,8 @@ public class GameManager : MonoBehaviour
         _elapsed_time += Time.deltaTime;
         if (_elapsed_time > 1.0f) 
         {
-            tickingScore -= Math.Max(scorePerTick, 0);
+            tickingScore -= scorePerTick;
+            tickingScore = Mathf.Max(tickingScore, 0);
             _elapsed_time -= 1.0f;
         }
         _gameUI.SetTickingScore(tickingScore);
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
-        difficulty = 0;
+        //difficulty = 0;
         SpawnPlayer();
         SpawnCastle();
     }
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
 
     void SpawnCastle()
     {
+        tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
         current_castle = Instantiate(_castle, _castleSpawn, Quaternion.identity);
         current_castle.Initialize(difficulty);
         current_castle._health.Died += CastleDestroyed;
@@ -173,6 +175,7 @@ public class GameManager : MonoBehaviour
         ClearObjects<ShieldCircleBehavior>();
         ClearObjects<MissileBehavior>();
         ClearObjects<BulletBehavior>();
+        ClearObjects<TargetedBarrageBehavior>();
         ClearObjects<ExplosionComponent>();
     }
 
