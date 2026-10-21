@@ -165,7 +165,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 20
   m_LinearDamping: 0
-  m_AngularDamping: 10
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -205,9 +205,13 @@ MonoBehaviour:
   _shootClip: {fileID: 8300000, guid: 14417b074943d4a5a9b66bd26c5520f8, type: 3}
   _health: {fileID: 0}
   _max_speed: 6
-  _forward_acc: 200
-  _turnTorque: 50
-  _friction: 60
+  _seconds_to_max_speed: 0.4
+  _coast_to_stop_time: 2
+  _seconds_to_stop: 0.5
+  _seconds_to_stop_sideways: 2
+  _max_turn_speed: 180
+  _seconds_to_max_turn_speed: 0.1
+  _seconds_to_stop_turning: 0.1
   _bullet: {fileID: 905870949321840995, guid: 2abff04c5d470433e8cb26a9ec555ae0, type: 3}
   _bullets_per_fire: 2
   _fire_cd: 1

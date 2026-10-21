@@ -36,7 +36,13 @@ public class GameManager : MonoBehaviour
     private PlayerBehavior current_player;
     private CastleBehavior current_castle;
     private int score = 0;
+    private int tickingScore = 0;
+    [SerializeField] private int baseTickingScore = 1000;
+    [SerializeField] private int tickingScoreMultiplier = 500;
+    [SerializeField] private int scorePerTick = 50;
     [SerializeField] private int difficulty = 0;
+
+    private float _elapsed_time;
 
     void Awake()
     {
@@ -72,12 +78,21 @@ public class GameManager : MonoBehaviour
             GameState = GameState == Utilities.GameState.Play ? 
                 Utilities.GameState.Pause : Utilities.GameState.Play;
         }
+
+        _elapsed_time += Time.deltaTime;
+        if (_elapsed_time > 1.0f) 
+        {
+            tickingScore -= Math.Max(scorePerTick, 0);
+            _elapsed_time -= 1.0f;
+        }
+        _gameUI.SetTickingScore(tickingScore);
     }
 
     void StartGame()
     {
         score = 0;
-        //difficulty = 0;
+        tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
+        difficulty = 0;
         SpawnPlayer();
         SpawnCastle();
     }
@@ -145,6 +160,7 @@ public class GameManager : MonoBehaviour
     void CastleDestroyed(HealthComponent health)
     {
         score += 1000;
+        score += tickingScore;
         player_lives++;
         _gameUI.SetScore(score);
         difficulty++;

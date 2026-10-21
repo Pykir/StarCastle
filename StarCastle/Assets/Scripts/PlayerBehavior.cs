@@ -20,9 +20,12 @@ public class PlayerBehavior : MonoBehaviour
     [HideInInspector] public HealthComponent _health;
 
     [SerializeField] private float _max_speed = 4.0f;
-    [SerializeField] private float _forward_acc = 10f;
-    [SerializeField] private float _turnTorque = 50f;
-    [SerializeField] private float _friction = 2.5f;
+    [SerializeField] private float _seconds_to_max_speed = 0.4f;
+    [SerializeField] private float _coast_to_stop_time = 2.0f;
+    [SerializeField] private float _seconds_to_stop = 1.0f;
+    [SerializeField] private float _max_turn_speed = 180f;
+    [SerializeField] private float _seconds_to_max_turn_speed = 0.1f;
+    [SerializeField] private float _seconds_to_stop_turning = 0.1f;
 
     [SerializeField] private BulletBehavior _bullet;
     [SerializeField] private int _bullets_per_fire = 3;
@@ -51,29 +54,66 @@ public class PlayerBehavior : MonoBehaviour
         float throttle = moveAction.ReadValue<Vector2>().y;
         float turn_direction = moveAction.ReadValue<Vector2>().x;
 
-        //_rb.rotation -= turn_direction * _turnSpeedDegrees * Time.fixedDeltaTime;
-        _rb.AddTorque(-turn_direction * _turnTorque);
+        // turning
+        float maxTurnAcceleration = _max_turn_speed;
 
-        if (Math.Sign(throttle) > 0)
+        if (turn_direction == 0f)
         {
-                //_rb.linearVelocity += (Vector2)transform.up.normalized * _forward_acc * Time.fixedDeltaTime;
-                float remainingSpeed = Mathf.Max(0f, _max_speed - Vector2.Dot(_rb.linearVelocity, transform.up)) / Time.fixedDeltaTime;
-
-                // locks thrust behind speed limit - this only enforces maximum speed forward
-                // The ship can be moving faster than limit due to drift and collisions
-                float thrustForce = Mathf.Min(_forward_acc, _rb.mass * remainingSpeed);
-
-                _rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
+            maxTurnAcceleration /= Mathf.Max(_seconds_to_stop_turning, 0.01f);
         } else
         {
-            //_rb.linearVelocity = Vector2.MoveTowards(_rb.linearVelocity, Vector2.zero, _friction * Time.fixedDeltaTime);
-            if (_rb.linearVelocity.magnitude > 0f)
-            {
-                float remainingFriction = Mathf.Min(_friction, _rb.mass * _rb.linearVelocity.magnitude / Time.fixedDeltaTime);
-                _rb.AddForce(-_rb.linearVelocity.normalized * remainingFriction, ForceMode2D.Force);
-            }    
+            maxTurnAcceleration /= Mathf.Max(_seconds_to_max_turn_speed, 0.01f);
+        }
+        
+        float remainingTurnAcceleration = ((-turn_direction * _max_turn_speed) - _rb.angularVelocity) / Time.fixedDeltaTime;
+
+        float turnTorque = Mathf.Clamp(remainingTurnAcceleration, -maxTurnAcceleration, maxTurnAcceleration) * Mathf.Deg2Rad * _rb.inertia;
+
+        _rb.AddTorque(turnTorque, ForceMode2D.Force);
+
+        Vector2 accelerationToAdd = Vector2.zero;
+        // acceleration code
+        if (Math.Sign(throttle) > 0)
+        {
+            float maxForwardAcceleration = _max_speed / Mathf.Max(_seconds_to_max_speed, 0.01f);
+
+            // computes how much speed is needed between current forward speed and max forward speed
+            float remainingForwardAcceleration = Mathf.Max(0f, _max_speed - Vector2.Dot(_rb.linearVelocity, transform.up)) / Time.fixedDeltaTime;
+
+            // locks thrust behind speed limit - this only enforces maximum speed forward
+            // The ship can be moving faster than limit due to drift and collisions
+            float finalForwardAcceleration = Mathf.Min(maxForwardAcceleration, remainingForwardAcceleration);
+
+            // this makes sure the sideways drift is slowed down during thrust still
+            float maxLateralDeceleration = _max_speed / Mathf.Max(_coast_to_stop_time, 0.01f);
+
+            float remainingLateralDeceleration = Mathf.Clamp(-Vector2.Dot(_rb.linearVelocity, transform.right) / Time.fixedDeltaTime, -maxLateralDeceleration, maxLateralDeceleration);
+
+            accelerationToAdd = (transform.up * finalForwardAcceleration) + (transform.right * remainingLateralDeceleration);
         }
 
+        // active braking
+        if (Math.Sign(throttle) < 0)
+        {
+            float deceleration = _max_speed / Mathf.Max(_seconds_to_stop, 0.01f);
+            float remainingBraking = Mathf.Min(deceleration, _rb.linearVelocity.magnitude / Time.fixedDeltaTime);
+            accelerationToAdd = -_rb.linearVelocity.normalized * remainingBraking;
+        }
+
+        // if no input, constant friction to slow down
+        if (throttle == 0)
+        {
+            if (_rb.linearVelocity.magnitude > 0f)
+            {
+                float deceleration = _max_speed / Mathf.Max(_coast_to_stop_time, 0.01f);
+                float remainingFriction = Mathf.Min(deceleration, _rb.linearVelocity.magnitude / Time.fixedDeltaTime);
+                accelerationToAdd = -_rb.linearVelocity.normalized * remainingFriction;
+            }    
+        }
+        
+        _rb.AddForce(accelerationToAdd * _rb.mass, ForceMode2D.Force);
+
+        // firing
         if(fireAction.IsPressed())
         {
             if (player_can_shoot)

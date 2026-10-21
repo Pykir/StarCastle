@@ -176,18 +176,26 @@ MonoBehaviour:
   _missile: {fileID: 6864671674825625746, guid: c839f602692b04edda22d789680d1dd2, type: 3}
   _mine: {fileID: 5353778692543784303, guid: a10783848e5eb44d4874f86a436dd1a2, type: 3}
   _bullet: {fileID: 5673956302632328582, guid: 0eb8051f568664d069c32e81833eb02f, type: 3}
-  _bullet_speed: 5
   _bullet_lifetime: 5
-  _shield_amount_multiplier: 0.4
+  _barrage: {fileID: 3565258034980751623, guid: 5081ab786d49f40a599d466df64f9e72, type: 3}
   _shield_starting_count: 2
-  _bullet_interval_multiplier: 0.3
+  _shield_amount_multiplier: 0.4
   _starting_bullet_interval: 5
+  _bullet_interval_decrement: 0.3
+  _bullet_minimum_interval: 1
+  _starting_bullet_speed: 5
   _bullet_speed_increment: 0.2
   _max_missiles_multiplier: 0.5
   _starting_missiles_count: 1
   _mine_frequency_multiplier: 0.05
   _starting_mine_frequency: 0.1
   _mine_lifetime: 8
+  _starting_barrage_count: 1
+  _barrage_count_multiplier: 0.4
+  _starting_barrage_interval: 7
+  _barrage_interval_decrement: 0.4
+  _barrage_minimum_interval: 2
+  current_time_between_barrages: 0
 --- !u!114 &-1849068065298537512
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class ExplosionComponent : MonoBehaviour
     [SerializeField] private int _damage = 1;
     [SerializeField] private float _radius = 1;
     [SerializeField] private float _explosionForce = 5;
-    [SerializeField] private int explosionType = 0;
+    [SerializeField] private int _explosionType = 0;
     
     private bool _exploding = false;
 
@@ -21,6 +21,25 @@ public class ExplosionComponent : MonoBehaviour
     {
         _cr = GetComponent<ContactRules>();
         _aSource = GetComponent<AudioSource>();
+        GetComponentInChildren<SpriteRenderer>().transform.localScale = Vector3.one * _radius * 2f;
+    }
+
+    public void Initialize(float radius)
+    {
+        Initialize(radius, _damage, _explosionForce, _explosionType);
+    }
+
+    public void Initialize(float radius, int damage)
+    {
+        Initialize(radius, damage, _explosionForce, _explosionType);
+    }
+
+    public void Initialize(float radius, int damage, float force, int type)
+    {
+        _radius = radius;
+        _damage = damage;
+        _explosionForce = force;
+        _explosionType = type;
         GetComponentInChildren<SpriteRenderer>().transform.localScale = Vector3.one * _radius * 2f;
     }
 
@@ -41,7 +60,7 @@ public class ExplosionComponent : MonoBehaviour
         
         _exploding = true;
 
-        if (explosionType == 0) DetonateCircle(_radius);
+        if (_explosionType == 0) DetonateCircle(_radius);
 
         StartCoroutine(ScheduleDestruction(1));
     }

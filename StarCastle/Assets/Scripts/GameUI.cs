@@ -5,8 +5,10 @@ using UnityEngine;
 public class GameUI : MonoBehaviour
 {
 [SerializeField] private TMP_Text scoreText;
+[SerializeField] private TMP_Text tickingScoreText;
 [SerializeField] private TMP_Text healthText;
 [SerializeField] private TMP_Text livesText;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,5 +35,10 @@ public class GameUI : MonoBehaviour
     public void SetLives(int lives)
     {
         livesText.text = $"Lives: {lives}";
+    }
+
+    public void SetTickingScore(int score)
+    {
+        tickingScoreText.text = $"Bonus: {score}";
     }
 }

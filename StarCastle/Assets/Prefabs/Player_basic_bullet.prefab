@@ -10,15 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -917801087105386451, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: damageTargets.m_Bits
-      value: 896
+      value: 768
       objectReference: {fileID: 0}
     - target: {fileID: -917801087105386451, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: durabilityCostTargets.m_Bits
-      value: 896
+      value: 768
       objectReference: {fileID: 0}
     - target: {fileID: 987455944611821057, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: m_Name
       value: Player_basic_bullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596394608219713547, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596394608219713547, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3596394608219713547, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3596394608219713547, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: m_LocalPosition.x
