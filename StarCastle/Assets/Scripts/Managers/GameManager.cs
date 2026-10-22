@@ -18,6 +18,15 @@ public class GameManager : MonoBehaviour
             Time.timeScale = value == Utilities.GameState.Play ? 1f : 0f;
             AudioListener.pause = value == Utilities.GameState.Pause;
             State?.Invoke(GameState);
+            var playerMap = InputSystem.actions.FindActionMap("Player", throwIfNotFound: true);
+
+            if (value == Utilities.GameState.Play)
+            {
+                playerMap.Enable();
+            } else
+            {
+                playerMap.Disable();
+            }
         }
     }
     private InputAction pauseAction;
@@ -27,11 +36,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerBehavior _playerShip;
     [SerializeField] private Vector2 _spawnPoint;
     [SerializeField] private int player_lives = 10;
-    [SerializeField] private float _respawn_time = 1;
+    [SerializeField, Min(0f)] private float _respawn_time = 1;
 
     [SerializeField] private CastleBehavior _castle;
     [SerializeField] private Vector2 _castleSpawn = Vector2.zero;
-    [SerializeField] private float _respawn_time_castle = 1;
+    [SerializeField, Min(0f)] private float _respawn_time_castle = 1;
 
     private PlayerBehavior current_player;
     private CastleBehavior current_castle;
@@ -41,6 +50,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int tickingScoreMultiplier = 500;
     [SerializeField] private int scorePerTick = 50;
     [SerializeField] private int difficulty = 0;
+    [SerializeField] private bool TESTING_DONT_SPAWN_CASTLE = false;
+    [SerializeField] private bool TESTING_DIFFICULTY = false;
 
     private float _elapsed_time;
 
@@ -75,8 +86,13 @@ public class GameManager : MonoBehaviour
         }
         if (pauseAction.WasPressedThisFrame())
         {
-            GameState = GameState == Utilities.GameState.Play ? 
-                Utilities.GameState.Pause : Utilities.GameState.Play;
+            if (GameState == Utilities.GameState.Play)
+            {
+                GameState = Utilities.GameState.Pause;
+            } else if (GameState == Utilities.GameState.Pause)
+            {
+                GameState = Utilities.GameState.Play;
+            }
         }
 
         _elapsed_time += Time.deltaTime;
@@ -93,7 +109,8 @@ public class GameManager : MonoBehaviour
     {
         score = 0;
         tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
-        //difficulty = 0;
+        if (!TESTING_DIFFICULTY) difficulty = 0;
+
         SpawnPlayer();
         SpawnCastle();
     }
@@ -109,6 +126,8 @@ public class GameManager : MonoBehaviour
 
     void SpawnCastle()
     {
+        if(TESTING_DONT_SPAWN_CASTLE) return;
+
         tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
         current_castle = Instantiate(_castle, _castleSpawn, Quaternion.identity);
         current_castle.Initialize(difficulty);

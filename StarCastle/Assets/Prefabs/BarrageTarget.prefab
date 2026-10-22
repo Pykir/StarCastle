@@ -179,4 +179,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e968825dfc8cf4267a980dba812143fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TargetedBarrageBehavior
-  _destructionEffect: {fileID: 5205891207778010495, guid: d64467db30b9946d68544cc86bfc6813, type: 3}
+  _destructionEffect: {fileID: 6404296977636785184, guid: 668bd8c4aacff475682ee5ed200bcf2d, type: 3}

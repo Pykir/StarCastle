@@ -10,7 +10,7 @@ public class MissileBehavior : MonoBehaviour
     [SerializeField] private float _max_angular_speed = 180;
     [SerializeField] private float heading_gain = 4f;
     [SerializeField] private float steering_gain = 0.2f;
-    [SerializeField] private float _responseTime = 0.25f;
+    [SerializeField, Min(0.01f)] private float _responseTime = 0.25f;
     [SerializeField] private bool _isMine = false;
 
     private bool attached = false;
@@ -47,7 +47,7 @@ public class MissileBehavior : MonoBehaviour
         Vector2 requestedVelocity = (_target_rb.position - _rb.position).normalized * _max_speed;
 
         // this is the acceleration needed to push the missile to that velocity over a certain time
-        Vector2 requestedAcceleration = (requestedVelocity - _rb.linearVelocity) / _responseTime;
+        Vector2 requestedAcceleration = (requestedVelocity - _rb.linearVelocity) / Mathf.Max(_responseTime, 0.01f);
 
 
         // this is how fast it wants to turn

@@ -35,13 +35,13 @@ public class ShieldCircleBehavior : MonoBehaviour
     
     public void Initialize(int sides, float radius, float speed, float startTime, float respawnTime, MissileBehavior mine, float mineChance, int maxMineCount, Rigidbody2D target, float mineLifetime)
     {
-        _shapeSides = sides;
+        _shapeSides = sides >= 3 ? sides : 3;
         _radius = radius;
         _rotationSpeed = speed;
         _scaleTime = startTime;
         _respawnTime = respawnTime;
         _mine = mine;
-        _mineChance = mineChance;
+        _mineChance = Mathf.Clamp01(mineChance);
         _maxMineCount = maxMineCount;
         _mineTarget = target;
         _mineLifetime = mineLifetime;

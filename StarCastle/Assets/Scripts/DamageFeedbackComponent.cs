@@ -6,9 +6,9 @@ public class DamageFeedbackComponent : MonoBehaviour
     private HealthComponent _health;
     private SpriteRenderer _renderer;
 
-    [SerializeField] private float _blinkInterval = 0.1f;
+    [SerializeField, Min(0.01f)] private float _blinkInterval = 0.1f;
     [SerializeField] private Color _hitTint = Color.white;
-    [SerializeField] private float _minOpacity = 0.3f;
+    [SerializeField, Range(0f, 1f)] private float _minOpacity = 0.3f;
 
     private Color _baseColor;
     private float _lastHitTime;
@@ -35,7 +35,7 @@ public class DamageFeedbackComponent : MonoBehaviour
         {
             color = _hitTint;
             // Finds what part of the wave it should be in
-            float phase = elapsed / _blinkInterval;
+            float phase = elapsed / Mathf.Max(_blinkInterval, 0.01f);
 
             // cos period is 2pi, so have to scale phase (0-1)
             // goes between minOpacity and 1

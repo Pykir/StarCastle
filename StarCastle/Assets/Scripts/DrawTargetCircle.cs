@@ -4,7 +4,7 @@ public class DrawTargetCircle : MonoBehaviour
 {
     private LineRenderer _line;
 
-    [SerializeField] private int _steps = 100;
+    [SerializeField, Min(2)] private int _steps = 100;
     [SerializeField] private float _radius = 1.0f;
 
     private float _time_step;
@@ -22,12 +22,12 @@ public class DrawTargetCircle : MonoBehaviour
 
     public void StartDrawCircle(float time, float radius)
     {
-        _time_step = time / _steps;
+        _time_step = time / Mathf.Max(_steps, 2);
         _radius = radius;
         _line.positionCount = 0;
         _line.loop = false;
 
-        _angle_per_step = 4f * Mathf.PI / (_steps - 1);
+        _angle_per_step = 4f * Mathf.PI / Mathf.Max((_steps - 1), 1);
         _current_step = 0;
         _elapsed_time = 0f;
 

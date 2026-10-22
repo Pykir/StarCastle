@@ -174,9 +174,9 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &7670860749962347701
 MonoBehaviour:
@@ -202,13 +202,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 272f74a9b2bef4923a40c66d8a384559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehavior
+  _firing_transform: {fileID: 6089986140978186371}
   _shootClip: {fileID: 8300000, guid: 14417b074943d4a5a9b66bd26c5520f8, type: 3}
   _health: {fileID: 0}
   _max_speed: 6
   _seconds_to_max_speed: 0.4
   _coast_to_stop_time: 2
   _seconds_to_stop: 0.5
-  _seconds_to_stop_sideways: 2
   _max_turn_speed: 180
   _seconds_to_max_turn_speed: 0.1
   _seconds_to_stop_turning: 0.1
@@ -218,6 +218,12 @@ MonoBehaviour:
   _bullet_cd: 0.05
   _bullet_lifetime: 3
   _bullet_speed: 10
+  _dash_distance: 5
+  _dash_acceleration_duration: 0.06
+  _dash_cruise_duration: 0.12
+  _dash_deceleration_duration: 0.12
+  _dash_max_charges: 1
+  _dash_recharge_time: 3
 --- !u!114 &9134726608100555186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,7 +238,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ContactRules
   damageTargets:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   durabilityCostTargets:
     serializedVersion: 2
     m_Bits: 512
