@@ -8,7 +8,6 @@ public class MissileBehavior : MonoBehaviour
     private HealthComponent _health;
     public Rigidbody2D _target_rb {get; set;}
 
-    [SerializeField] private float _time_before_death_trigger = 0.5f;
     [SerializeField, Min(0.01f)] private float _explosionRadius = 0.6f;
     public float ExplosionRadius => _explosionRadius;
     [SerializeField] private float _max_speed = 9f;

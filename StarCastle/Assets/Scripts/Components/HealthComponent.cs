@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class HealthComponent : MonoBehaviour
 {
+    public int MaxHealth { get; private set; }
     [SerializeField] public int health = 2;
     [SerializeField] private int _max_forcefields = 0;
     private int _forcefield_count = 0;
@@ -32,10 +33,18 @@ public class HealthComponent : MonoBehaviour
 
     private void Awake()
     {
+        MaxHealth = health;
+        
         if (_startWithInvuln)
         {
             _invulnerableUntil = Time.time + _invulnTime;
         }
+    }
+
+    public void InitializeHealth(int maxHealth)
+    {
+        MaxHealth = Mathf.Max(1, maxHealth);
+        health = MaxHealth;
     }
 
     void FixedUpdate()

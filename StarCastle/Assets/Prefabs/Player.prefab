@@ -238,26 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehavior
   _firing_transform: {fileID: 6089986140978186371}
-  _max_speed: 6
-  _seconds_to_max_speed: 0.4
-  _coast_to_stop_time: 2
-  _seconds_to_stop: 0.5
-  _max_turn_speed: 180
-  _seconds_to_max_turn_speed: 0.1
-  _seconds_to_stop_turning: 0.1
-  _overspeed_recovery_time: 0.4
   _bullet: {fileID: 905870949321840995, guid: 2abff04c5d470433e8cb26a9ec555ae0, type: 3}
-  _bullets_per_fire: 2
-  _fire_cd: 1
-  _bullet_cd: 0.05
-  _bullet_lifetime: 3
-  _bullet_speed: 12
-  _dash_distance: 5
-  _dash_acceleration_duration: 0.06
-  _dash_cruise_duration: 0.12
-  _dash_deceleration_duration: 0.12
-  _dash_max_charges: 1
-  _dash_recharge_time: 3
 --- !u!114 &5056492296985357151
 MonoBehaviour:
   m_ObjectHideFlags: 0

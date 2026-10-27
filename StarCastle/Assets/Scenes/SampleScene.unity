@@ -1249,6 +1249,7 @@ GameObject:
   - component: {fileID: 1349402057}
   - component: {fileID: 1349402058}
   - component: {fileID: 1349402059}
+  - component: {fileID: 1349402060}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1320,6 +1321,18 @@ MonoBehaviour:
   _clearance_radius: 0.75
   _position_attempts: 20
   _bounds_padding: 1
+--- !u!114 &1349402060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349402056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d991047bab4ad4a88bd393c20749e9e4, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsTracker
 --- !u!1 &1433319620
 GameObject:
   m_ObjectHideFlags: 0

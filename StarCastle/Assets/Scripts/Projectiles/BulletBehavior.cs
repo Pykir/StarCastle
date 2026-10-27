@@ -9,6 +9,7 @@ public class BulletBehavior : MonoBehaviour
     private ContactRules _cr;
     private DestructionComponent _destruction;
     private HealthComponent _health;
+    
     [SerializeField] private int _damage = 1;
 
     public float _time_left = 0;

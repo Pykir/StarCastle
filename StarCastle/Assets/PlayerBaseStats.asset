@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85579802f36db4d5f89248210e286efb, type: 3}
   m_Name: PlayerBaseStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsDefinition
+  _max_speed: 6
+  _seconds_to_max_speed: 0.4
+  _coast_to_stop_time: 2
+  _seconds_to_stop: 0.5
+  _max_turn_speed: 180
+  _seconds_to_max_turn_speed: 0.1
+  _seconds_to_stop_turning: 0.1
+  _overspeed_recovery_time: 0.4
+  _dash_distance: 5
+  _dash_acceleration_duration: 0.06
+  _dash_cruise_duration: 0.12
+  _dash_deceleration_duration: 0.12
+  _dash_max_charges: 1
+  _dash_recharge_time: 3
   _fire_cd: 1
   _bullets_per_fire: 2
   _bullet_cd: 0.05

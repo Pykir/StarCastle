@@ -2,9 +2,13 @@ using UnityEngine;
 
 public class PlayerStatsTracker : MonoBehaviour
 {
+    [Header ("Player upgrades")]
+    private int _additional_max_health = 0;
+    public int AddMaxHealth => _additional_max_health;
+
     [Header ("Movement upgrades")]
-    private float _movement_multiplier = 1;
-    public float MovementMult => _movement_multiplier;
+    private float _additional_move_speed = 0;
+    public float AddMoveSpeed => _additional_move_speed;
     private float _additional_dash_distance = 0;
     public float AddDashDistance => _additional_dash_distance;
     private float _recharge_rate_multiplier = 1;

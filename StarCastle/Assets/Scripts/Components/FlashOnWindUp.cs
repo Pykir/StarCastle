@@ -10,7 +10,6 @@ public class FlashOnWindUp : MonoBehaviour
     [SerializeField] private float _starting_flash_interval = 0.05f;
     [SerializeField] private float _ending_flash_interval = 0.01f;
     [SerializeField] private Color _colorTint = Color.white;
-    [SerializeField] private float _minOpacity = 0.3f;
 
     private float _elapsed_time;
     private float _current_interval;
