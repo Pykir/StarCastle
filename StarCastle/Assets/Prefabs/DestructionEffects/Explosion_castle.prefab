@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 6b9550eec70d945e6a6d60e5b1550340, type: 3}
     - target: {fileID: 2710122729091860331, guid: d64467db30b9946d68544cc86bfc6813, type: 3}
       propertyPath: _explosionForce
-      value: 30
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3025430744339810997, guid: d64467db30b9946d68544cc86bfc6813, type: 3}
       propertyPath: damageTargets.m_Bits

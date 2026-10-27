@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5212878984932128825}
   - component: {fileID: 7670860749962347701}
   - component: {fileID: 4337513371797581153}
+  - component: {fileID: 5056492296985357151}
   - component: {fileID: 9134726608100555186}
   - component: {fileID: 8623648752801139240}
   - component: {fileID: 1507322264136521562}
@@ -204,7 +205,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehavior
   _firing_transform: {fileID: 6089986140978186371}
   _shootClip: {fileID: 8300000, guid: 14417b074943d4a5a9b66bd26c5520f8, type: 3}
-  _health: {fileID: 0}
   _max_speed: 6
   _seconds_to_max_speed: 0.4
   _coast_to_stop_time: 2
@@ -212,18 +212,31 @@ MonoBehaviour:
   _max_turn_speed: 180
   _seconds_to_max_turn_speed: 0.1
   _seconds_to_stop_turning: 0.1
+  _overspeed_recovery_time: 0.4
   _bullet: {fileID: 905870949321840995, guid: 2abff04c5d470433e8cb26a9ec555ae0, type: 3}
   _bullets_per_fire: 2
   _fire_cd: 1
   _bullet_cd: 0.05
   _bullet_lifetime: 3
-  _bullet_speed: 10
+  _bullet_speed: 12
   _dash_distance: 5
   _dash_acceleration_duration: 0.06
   _dash_cruise_duration: 0.12
   _dash_deceleration_duration: 0.12
   _dash_max_charges: 1
   _dash_recharge_time: 3
+--- !u!114 &5056492296985357151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5832186487943311497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 951dda81209aa4e0d8c775a6a0f85698, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEffects
 --- !u!114 &9134726608100555186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,10 +251,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ContactRules
   damageTargets:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
   durabilityCostTargets:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 1536
 --- !u!114 &8623648752801139240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,8 +269,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HealthComponent
   _hurtClip: {fileID: 8300000, guid: 878ffcbc4ce2b4cdeb10f5088d7ce55e, type: 3}
   health: 5
+  _max_forcefields: 3
   _invulnTime: 0.5
   _startWithInvuln: 1
+  _hasWindUp: 0
+  _windUpTime: 0.2
 --- !u!114 &1507322264136521562
 MonoBehaviour:
   m_ObjectHideFlags: 0

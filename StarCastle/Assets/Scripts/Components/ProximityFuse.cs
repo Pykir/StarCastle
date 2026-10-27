@@ -8,8 +8,8 @@ public class ProximityFuse : MonoBehaviour
 
    [SerializeField] private float _triggerRadius = 1f;
    private bool _triggered = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _cr = GetComponent<ContactRules>();

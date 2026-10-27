@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -917801087105386451, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: damageTargets.m_Bits
-      value: 768
+      value: 1792
       objectReference: {fileID: 0}
     - target: {fileID: -917801087105386451, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: durabilityCostTargets.m_Bits
-      value: 768
+      value: 1792
       objectReference: {fileID: 0}
     - target: {fileID: 987455944611821057, guid: b97e3bd145ed248ad8fa0412263d3e59, type: 3}
       propertyPath: m_Name

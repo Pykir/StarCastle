@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6440623217238329833}
   - component: {fileID: 4955980263600822794}
   - component: {fileID: 7059058420672597357}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: ShieldCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShieldCircleBehavior
   _shieldseg: {fileID: 3699810347243277409, guid: 22312867d5f5643cfaae366f102ae437, type: 3}
+  _mineTarget: {fileID: 0}
+  _mineActivationDistance: 3
+  _mineReleaseBoost: 3
 --- !u!50 &7059058420672597357
 Rigidbody2D:
   serializedVersion: 5

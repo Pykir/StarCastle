@@ -43,6 +43,11 @@ public class DestructionComponent : MonoBehaviour
 
         if (_destructionEffect) {
             GameObject effect = Instantiate(_destructionEffect, transform.position, transform.rotation);
+
+            if (TryGetComponent<MissileBehavior>(out var missile) && effect.TryGetComponent<ExplosionComponent>(out var explosion))
+            {
+                explosion.Initialize(missile.ExplosionRadius);
+            }
         }
         Destroy(gameObject);
     }

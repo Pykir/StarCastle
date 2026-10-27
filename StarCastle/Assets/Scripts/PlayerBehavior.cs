@@ -15,11 +15,12 @@ public class PlayerBehavior : MonoBehaviour
     private Rigidbody2D _rb;
     private ContactRules _cr;
     [SerializeField] private Transform _firing_transform;
+    private PlayerEffects _player_effectors;
 
     private AudioSource _aSource;
     [SerializeField] private AudioClip _shootClip;
 
-    [HideInInspector] public HealthComponent _health;
+    [HideInInspector] public HealthComponent _health {get; set;}
 
     [SerializeField] private float _max_speed = 4.0f;
     [SerializeField, Min(0f)] private float _seconds_to_max_speed = 0.4f;
@@ -47,6 +48,8 @@ public class PlayerBehavior : MonoBehaviour
     private int _current_dash_charges = 1;
 
     private bool player_can_shoot = true;
+    private float _fireTimer = 0f;
+
     private bool player_can_dash = true;
     private bool _dashRequested = false;
     private bool dashing = false;
@@ -68,7 +71,9 @@ public class PlayerBehavior : MonoBehaviour
         _cr = GetComponent<ContactRules>();
         _health = GetComponent<HealthComponent>();
         _aSource = GetComponent<AudioSource>();
+        _player_effectors = GetComponent<PlayerEffects>();
         _current_dash_charges = _dash_max_charges;
+        _fireTimer = _fire_cd;
     }
 
     // Update is called once per frame
@@ -109,22 +114,22 @@ public class PlayerBehavior : MonoBehaviour
                 
             _dashTimer += Time.fixedDeltaTime;
         } 
-        else // when not dashing, normal movement
+        else // when not dashing, normal movement, allow firing
         {
             Vector2 movement_input = moveAction.ReadValue<Vector2>();
             ApplyTurning(movement_input.x);
             ApplyMovement(movement_input.y);
-        }
-        
-        if(fireAction.IsPressed())
-        {
-            if (player_can_shoot)
+
+            if(fireAction.IsPressed())
             {
-                StartCoroutine(FireBullets(_bullets_per_fire));
-                StartCoroutine(FireCooldown());
+                if (_fireTimer >= _fire_cd / _player_effectors.FiringMult)
+                {
+                    StartCoroutine(FireBullets(_bullets_per_fire));
+                    _fireTimer = 0;
+                }
             }
         }
-        
+        _fireTimer += Time.fixedDeltaTime;
     }
 
     private void ApplyTurning(float turn_direction)
@@ -274,15 +279,6 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    private IEnumerator FireCooldown()
-    {
-        player_can_shoot = false;
-
-        yield return new WaitForSeconds(_fire_cd);
-
-        player_can_shoot = true;
-    }
-
     private IEnumerator FireBullets(int number_of_bullets)
     {   
         for(int i = 0; i < number_of_bullets; i++)
@@ -291,7 +287,7 @@ public class PlayerBehavior : MonoBehaviour
 
             BulletBehavior newBullet = Instantiate(_bullet, _firing_transform.position, transform.rotation);
             newBullet.Initialize(transform.up.normalized, _bullet_lifetime, _bullet_speed);
-            yield return new WaitForSeconds(_bullet_cd);
+            yield return new WaitForSeconds(_bullet_cd / _player_effectors.FiringMult);
         }
     }
 

@@ -17,6 +17,9 @@ public class ShieldCircleBehavior : MonoBehaviour
     private float _mineChance = 0.1f;
     private float _mineLifetime = 8f;
     private int _maxMineCount;
+    [SerializeField] private float _mineActivationDistance = 2.5f;
+    [SerializeField] private float _mineReleaseBoost = 3f;
+
 
     private int current_mine_count;
     private int _remainingSegments = 0;
@@ -65,6 +68,9 @@ public class ShieldCircleBehavior : MonoBehaviour
         {
             _currentScale = Mathf.Clamp01(_currentScale + Time.fixedDeltaTime / _scaleTime);
             transform.localScale = new Vector3(_currentScale, _currentScale, 1f);
+        } else
+        {
+            CheckMineProximity();
         }
     }
 
@@ -141,7 +147,7 @@ public class ShieldCircleBehavior : MonoBehaviour
         mine.transform.localScale = _mine.transform.localScale;
 
         mine.ActivateMine();
-        mine.GetComponent<BulletBehavior>().Initialize(_mineTarget.transform.position - mine.transform.position, _mineLifetime, 0f);
+        mine.GetComponent<BulletBehavior>().Initialize(_mineTarget.transform.position - mine.transform.position, _mineLifetime, _mineReleaseBoost);
     }
 
     void OnSegmentDied(HealthComponent segment)
@@ -187,5 +193,22 @@ public class ShieldCircleBehavior : MonoBehaviour
 
         RegenerationRequested?.Invoke(this, _radius);
         Destroy(gameObject);
+    }
+
+    void CheckMineProximity()
+    {
+        if (_mineTarget == null) return;
+
+        for (int i = 0; i < mineArray.Length; i++)
+        {
+            MissileBehavior mine = mineArray[i];
+            if (mine == null) continue;
+
+            if (Vector2.Distance(_mineTarget.position, mine.transform.position) <= _mineActivationDistance)
+            {
+                TryLaunchMineAtSlot(i);
+            }
+        }
+        
     }
 }

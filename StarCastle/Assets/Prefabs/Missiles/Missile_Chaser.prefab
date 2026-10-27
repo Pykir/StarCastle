@@ -12,6 +12,18 @@ PrefabInstance:
       propertyPath: _max_speed
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: heading_gain
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _explosionRadius
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _hasWindUp
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8124796707325694343, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -54,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9179018930510847689, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Name
-      value: Missile_fast
+      value: Missile_Chaser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

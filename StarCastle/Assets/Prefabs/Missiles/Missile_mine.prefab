@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -1622329332405708174, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -1622329332405708174, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _triggerRadius
@@ -19,6 +19,14 @@ PrefabInstance:
     - target: {fileID: 4367098211982340, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Color.b
       value: 0.70980394
+      objectReference: {fileID: 0}
+    - target: {fileID: 1419373096754115314, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1654345395072326387, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _isMine
@@ -41,12 +49,16 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _explosionRadius
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _max_angular_speed
       value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 3181510109486124858, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: durabilityCostTargets.m_Bits
-      value: 128
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3583435777611751683, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Size.x
@@ -60,14 +72,30 @@ PrefabInstance:
       propertyPath: health
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _hasWindUp
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _windUpTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4508610953530659057, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: damage
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5786459354539696203, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6481048800657270647, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6699048214489220517, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _destructionEffect
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2727574887172191235, guid: 0374fea52f5c6434c9f7ea33b2998baa, type: 3}
     - target: {fileID: 8124796707325694343, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.5
@@ -122,7 +150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9179018930510847689, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Name
-      value: Missile_slow
+      value: Missile_mine
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1154823027465726365, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}

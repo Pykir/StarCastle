@@ -142,7 +142,7 @@ MonoBehaviour:
   _damage: 1
   _radius: 1
   _explosionForce: 5
-  explosionType: 0
+  _explosionType: 0
 --- !u!114 &3025430744339810997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ContactRules
   damageTargets:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 1472
   durabilityCostTargets:
     serializedVersion: 2
     m_Bits: 0
