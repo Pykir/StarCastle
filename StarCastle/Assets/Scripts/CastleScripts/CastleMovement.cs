@@ -5,12 +5,7 @@ public class CastleMovement : MonoBehaviour
 {
     private Rigidbody2D _rb;
     private Camera _camera;
-
-    [SerializeField] private float _bounds_padding = 2f;
-    [SerializeField] private float _acceleration = 5f;
-    [SerializeField] private float _correction_acceleration = 8f;
-    [SerializeField] private float _move_time = 3;
-    [SerializeField] private float _wait_time = 10;
+    private CastleDefinition _definition;
 
     private bool moving;
     private Vector2 random_direction;
@@ -19,6 +14,11 @@ public class CastleMovement : MonoBehaviour
     private float _bottom_bound;
     private float _left_bound;
     private float _right_bound;
+
+    public void Initialize(CastleDefinition definition)
+    {
+        _definition = definition;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,7 +35,7 @@ public class CastleMovement : MonoBehaviour
     {
         if(moving)
         {
-            if (_elapsed_time > _move_time)
+            if (_elapsed_time > _definition._move_time)
             {
                 moving = false;
                 _elapsed_time = 0;
@@ -44,7 +44,7 @@ public class CastleMovement : MonoBehaviour
 
         if (!moving)
         {
-            if (_elapsed_time > _wait_time)
+            if (_elapsed_time > _definition._wait_time)
             {
                 moving = true;
                 _elapsed_time = 0;
@@ -60,20 +60,20 @@ public class CastleMovement : MonoBehaviour
         Vector2 position = _rb.position;
 
         // if moving, use random_direction, else don't apply any movement
-        Vector2 wanderAcceleration = moving ? random_direction * _acceleration : Vector2.zero;
+        Vector2 wanderAcceleration = moving ? random_direction * _definition._acceleration : Vector2.zero;
 
         Vector2 correctionAcceleration = Vector2.zero;
 
         if (position.x > _right_bound)
         {
-            correctionAcceleration.x = -_correction_acceleration;
+            correctionAcceleration.x = -_definition._correction_acceleration;
             wanderAcceleration.x = 0f;
 
             random_direction.x = -Mathf.Abs(random_direction.x);
         }
         else if (position.x < _left_bound)
         {
-            correctionAcceleration.x = _correction_acceleration;
+            correctionAcceleration.x = _definition._correction_acceleration;
             wanderAcceleration.x = 0f;
 
             random_direction.x = Mathf.Abs(random_direction.x);
@@ -81,14 +81,14 @@ public class CastleMovement : MonoBehaviour
 
         if (position.y > _top_bound)
         {
-            correctionAcceleration.y = -_correction_acceleration;
+            correctionAcceleration.y = -_definition._correction_acceleration;
             wanderAcceleration.y = 0f;
 
             random_direction.y = -Mathf.Abs(random_direction.y);
         }
         else if (position.y < _bottom_bound)
         {
-            correctionAcceleration.y = _correction_acceleration;
+            correctionAcceleration.y = _definition._correction_acceleration;
             wanderAcceleration.y = 0f;
 
             random_direction.y = Mathf.Abs(random_direction.y);
@@ -104,9 +104,9 @@ public class CastleMovement : MonoBehaviour
         float screenWidth = _camera.orthographicSize * _camera.aspect;
         float screenHeight = _camera.orthographicSize;
 
-        _top_bound = _camera.transform.position.y + screenHeight - _bounds_padding;
-        _bottom_bound = _camera.transform.position.y - screenHeight + _bounds_padding;
-        _left_bound = _camera.transform.position.x - screenWidth + _bounds_padding;
-        _right_bound = _camera.transform.position.x + screenWidth - _bounds_padding;
+        _top_bound = _camera.transform.position.y + screenHeight - _definition._bounds_padding;
+        _bottom_bound = _camera.transform.position.y - screenHeight + _definition._bounds_padding;
+        _left_bound = _camera.transform.position.x - screenWidth + _definition._bounds_padding;
+        _right_bound = _camera.transform.position.x + screenWidth - _definition._bounds_padding;
     }
 }

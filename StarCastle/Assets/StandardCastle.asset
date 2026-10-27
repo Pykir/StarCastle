@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be369dc6904a4438837e26bf880dde41, type: 3}
+  m_Name: StandardCastle
+  m_EditorClassIdentifier: Assembly-CSharp::CastleDefinition
+  _shield: {fileID: 4955980263600822794, guid: c7fc15a9f297b499fb7326e228ba66bf, type: 3}
+  _shield_spawn_time: 2
+  _shield_shape_sides: 12
+  _shield_respawn_time: 1
+  _shield_speed_base: 160
+  _shield_speed_variation: 30
+  _shield_smallest_radius: 1
+  _shield_radius_gap: 1
+  _missileOptions:
+  - name: Chaser
+    prefab: {fileID: 6864671674825625746, guid: c839f602692b04edda22d789680d1dd2, type: 3}
+    weight: 5
+    lifetime: 10
+    minimumDifficulty: 0
+  - name: Dart
+    prefab: {fileID: 8049229978964021980, guid: 68c945a8dbbdd4ca68ab17a86165936a, type: 3}
+    weight: 2
+    lifetime: 8
+    minimumDifficulty: 0
+  - name: Shrapnel
+    prefab: {fileID: 2198356758525431669, guid: 93f0c191fb0c741daaffea30fb29fdc1, type: 3}
+    weight: 2
+    lifetime: 6
+    minimumDifficulty: 0
+  - name: Jumper
+    prefab: {fileID: 8358529965282713046, guid: 2453b2f297dfa490484d0a4fd0e911b7, type: 3}
+    weight: 3
+    lifetime: 20
+    minimumDifficulty: 0
+  _mine: {fileID: 5353778692543784303, guid: a10783848e5eb44d4874f86a436dd1a2, type: 3}
+  _bullet: {fileID: 5673956302632328582, guid: 0eb8051f568664d069c32e81833eb02f, type: 3}
+  _bullet_lifetime: 5
+  _barrage: {fileID: 3565258034980751623, guid: 5081ab786d49f40a599d466df64f9e72, type: 3}
+  _barrage_fuse_time: 1
+  _barrage_radius: 1
+  _barrage_damage: 2
+  _shield_starting_count: 2
+  _shield_amount_multiplier: 0.4
+  _starting_bullet_interval: 5
+  _bullet_interval_decrement: 0.3
+  _bullet_minimum_interval: 1
+  _starting_bullet_speed: 5
+  _bullet_speed_increment: 0.2
+  _max_missiles_multiplier: 0.5
+  _starting_missiles_count: 1
+  _starting_missile_interval: 6
+  _missile_interval_decrement: 0.5
+  _missile_minimum_interval: 1.5
+  _mine_frequency_multiplier: 0.03
+  _starting_mine_frequency: 0
+  _mine_lifetime: 8
+  _barrage_starting_difficulty: 3
+  _starting_barrage_count: 1
+  _barrage_count_multiplier: 0.4
+  _starting_barrage_interval: 7
+  _barrage_interval_decrement: 0.4
+  _barrage_minimum_interval: 2
+  _time_between_barrages: 0.3
+  _bounds_padding: 2
+  _acceleration: 5
+  _correction_acceleration: 8
+  _move_time: 5
+  _wait_time: 5

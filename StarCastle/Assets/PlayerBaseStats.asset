@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85579802f36db4d5f89248210e286efb, type: 3}
   m_Name: PlayerBaseStats
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsDefinition
+  _max_health: 5
   _max_speed: 6
   _seconds_to_max_speed: 0.4
   _coast_to_stop_time: 2
