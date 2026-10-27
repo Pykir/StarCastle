@@ -1,14 +1,23 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
     [SerializeField] private GameObject PausePanel;
+    [SerializeField] private GameObject IntermissionPanel;
+    [SerializeField] private GameObject GameOverPanel;
+
     private AudioSource menuAudioSource;
+
+    private bool _isReloading;
 
     void Awake()
     {
         PausePanel.SetActive(false);
+        IntermissionPanel.SetActive(false);
+        GameOverPanel.SetActive(false);
     }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -28,8 +37,16 @@ public class MenuManager : MonoBehaviour
     void onStateChange(Utilities.GameState gameState)
     {
         bool isPaused = gameState == Utilities.GameState.Pause;
+        bool isIntermission =
+            gameState == Utilities.GameState.Intermission;
+        bool isGameOver =
+            gameState == Utilities.GameState.GameOver;
+
         PausePanel.SetActive(isPaused);
-        Cursor.visible = isPaused;
+        IntermissionPanel.SetActive(isIntermission);
+        GameOverPanel.SetActive(isGameOver);
+
+        Cursor.visible = isPaused || isIntermission || isGameOver;
     }
 
     public void ResumeGame()
@@ -40,9 +57,26 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public void RetryRun()
+    {
+        if (_isReloading)
+            return;
+
+        var state = GameManager.Instance.GameState;
+
+        if (state != Utilities.GameState.GameOver &&
+            state != Utilities.GameState.Pause)
+        {
+            return;
+        }
+
+        _isReloading = true;
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
     void OnDestroy()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.State -= onStateChange;
+        if (GameManager.Instance != null) GameManager.Instance.State -= onStateChange;
     }
 }

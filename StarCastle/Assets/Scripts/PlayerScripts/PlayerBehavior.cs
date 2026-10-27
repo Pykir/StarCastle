@@ -72,6 +72,8 @@ public class PlayerBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.Instance.GameState != Utilities.GameState.Play) return;
+
         if (dashAction.WasPressedThisFrame())
         {
             _dashRequested = true;

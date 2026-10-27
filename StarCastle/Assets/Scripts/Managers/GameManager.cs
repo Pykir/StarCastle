@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
             _game_state = value;
             Time.timeScale = value == Utilities.GameState.Play ? 1f : 0f;
             AudioListener.pause = value == Utilities.GameState.Pause;
-            State?.Invoke(GameState);
+
             var playerMap = InputSystem.actions.FindActionMap("Player", throwIfNotFound: true);
 
             if (value == Utilities.GameState.Play)
@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
             {
                 playerMap.Disable();
             }
+
+            State?.Invoke(GameState);
         }
     }
     private InputAction pauseAction;
@@ -56,10 +58,15 @@ public class GameManager : MonoBehaviour
 
     private float _elapsed_time;
 
+    private bool _roundTransitionInProgress;
+    private bool _awaitingIntermissionCompletion;
+    private int _intermissionID = 0;
+    public event Action<int> IntermissionStarted;
+
     void Awake()
     {
         _runPlayerStats = GetComponent<PlayerStatsTracker>();
-        
+
         if (Instance == null)
         {
             Instance = this;
@@ -83,10 +90,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameState == Utilities.GameState.Respawning)
-        {
-            return;
-        }
+        
         if (pauseAction.WasPressedThisFrame())
         {
             if (GameState == Utilities.GameState.Play)
@@ -97,6 +101,12 @@ public class GameManager : MonoBehaviour
                 GameState = Utilities.GameState.Play;
             }
         }
+
+        if (GameState != Utilities.GameState.Play)
+        {
+            return;
+        }
+        
 
         _elapsed_time += Time.deltaTime;
         if (_elapsed_time > 1.0f) 
@@ -110,9 +120,11 @@ public class GameManager : MonoBehaviour
 
     void StartGame()
     {
-        score = 0;
-        tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
         if (!TESTING_DIFFICULTY) difficulty = 0;
+
+        score = 0;
+        _gameUI.SetScore(score);
+        ResetTickingScore();
 
         SpawnPlayer();
         SpawnCastle();
@@ -133,7 +145,6 @@ public class GameManager : MonoBehaviour
     {
         if(TESTING_DONT_SPAWN_CASTLE) return;
 
-        tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
         current_castle = Instantiate(_castle, _castleSpawn, Quaternion.identity);
         current_castle.Initialize(difficulty);
         current_castle._health.Died += CastleDestroyed;
@@ -153,15 +164,17 @@ public class GameManager : MonoBehaviour
         _spawnPoint = health.transform.position;
         player_lives--;
 
+        _gameUI.SetHealth(0);
+        _gameUI.SetLives(player_lives);
+
         if (player_lives == 0)
         {
             GameState = Utilities.GameState.GameOver;
             ClearRound();
+            _roundTransitionInProgress = false;
+            _awaitingIntermissionCompletion = false;
             return;
         }
-
-        _gameUI.SetHealth(0);
-        _gameUI.SetLives(player_lives);
 
         StartCoroutine(RespawnPlayer());
     }
@@ -185,12 +198,70 @@ public class GameManager : MonoBehaviour
 
     void CastleDestroyed(HealthComponent health)
     {
+        if (GameState == Utilities.GameState.GameOver ||
+        _roundTransitionInProgress ||
+        current_castle == null ||
+        health != current_castle._health)
+        {
+            return;
+        }
+
+        _roundTransitionInProgress = true;
         score += 1000;
         score += tickingScore;
         player_lives++;
+        _gameUI.SetLives(player_lives);
         _gameUI.SetScore(score);
-        difficulty++;
-        StartCoroutine(RespawnCastle());
+        
+        StartCoroutine(TransitionToIntermission());
+    }
+
+    private IEnumerator TransitionToIntermission()
+    {
+        yield return new WaitForSecondsRealtime(_respawn_time_castle);
+
+        while (GameState == Utilities.GameState.Pause || GameState == Utilities.GameState.Respawning) yield return null;
+
+        if (GameState != Utilities.GameState.Play || !_roundTransitionInProgress) yield break;
+
+        ClearRound();
+        current_castle = null;
+        BeginIntermission();
+        
+    }
+
+    void BeginIntermission()
+    {
+        if (_awaitingIntermissionCompletion) return;
+        
+        _intermissionID++;
+        _awaitingIntermissionCompletion = true;
+
+        GameState = Utilities.GameState.Intermission;
+        IntermissionStarted?.Invoke(_intermissionID);
+    }
+
+    public void CompleteIntermission(int ID)
+    {
+        if ((ID == _intermissionID) && _awaitingIntermissionCompletion && (GameState == Utilities.GameState.Intermission))
+        {
+            _awaitingIntermissionCompletion = false;
+            _roundTransitionInProgress = false;
+
+            difficulty++;
+            
+            ResetTickingScore();
+            SpawnCastle();
+            GameState = Utilities.GameState.Play;
+        }
+    }
+
+    void ResetTickingScore()
+    {
+        _elapsed_time = 0f;
+        tickingScore = baseTickingScore + (difficulty * tickingScoreMultiplier);
+
+        _gameUI.SetTickingScore(tickingScore);
     }
 
     void ClearRound()
@@ -202,14 +273,9 @@ public class GameManager : MonoBehaviour
         ClearObjects<TargetedBarrageBehavior>();
         ClearObjects<ExplosionComponent>();
         ClearObjects<ExplosionVisuals>();
+        ClearObjects<ShrapnelComponent>();
     }
 
-    private IEnumerator RespawnCastle()
-    {
-        yield return new WaitForSecondsRealtime(_respawn_time_castle);
-        ClearRound();
-        SpawnCastle();
-    }
 
     void ClearObjects<T>() where T : Component
     {

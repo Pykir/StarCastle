@@ -7,6 +7,7 @@ public static class Utilities
     {
         Play,
         Pause,
+        Intermission,
         Respawning,
         GameOver
     }
