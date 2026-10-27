@@ -16,9 +16,7 @@ public class PlayerBehavior : MonoBehaviour
     private ContactRules _cr;
     [SerializeField] private Transform _firing_transform;
     private PlayerEffects _player_effectors;
-
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _shootClip;
+    private PlayerStats _stats;
 
     [HideInInspector] public HealthComponent _health {get; set;}
 
@@ -32,12 +30,6 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField, Min(0f)] private float _overspeed_recovery_time = 0.4f;
 
     [SerializeField] private BulletBehavior _bullet;
-    [SerializeField, Min(0)] private int _bullets_per_fire = 3;
-    [SerializeField, Min(0f)] private float _fire_cd = 2.0f;
-
-    [SerializeField, Min(0f)] private float _bullet_cd = 0.05f;
-    [SerializeField, Min(0.01f)] private float _bullet_lifetime = 3.0f;
-    [SerializeField] private float _bullet_speed = 8.0f;
 
     [SerializeField] private float _dash_distance = 5f;
     [SerializeField, Min(0.01f)] private float _dash_acceleration_duration = 0.06f;
@@ -47,12 +39,18 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField, Min(0f)] private float _dash_recharge_time = 3.0f;
     private int _current_dash_charges = 1;
 
+    private bool throttle_on = false;
+    public bool IsEngineFiring => throttle_on;
+    private bool braking = false;
+    public bool IsBraking => braking;
+
     private bool player_can_shoot = true;
     private float _fireTimer = 0f;
 
     private bool player_can_dash = true;
     private bool _dashRequested = false;
     private bool dashing = false;
+    public bool IsDashing => dashing;
     private float _dash_duration = 0f;
     private Vector2 _dash_direction;
     private Vector2 _dash_lateral_direction;
@@ -60,6 +58,10 @@ public class PlayerBehavior : MonoBehaviour
     private float _dash_deceleration;
     private float _dash_lateral_acceleration_limit;
     private float _dashTimer = 0f;
+    
+    public event Action ShotFired;
+    public event Action DashStarted;
+    public event Action DashEnded;
     
     void Awake()
     {
@@ -70,10 +72,15 @@ public class PlayerBehavior : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _cr = GetComponent<ContactRules>();
         _health = GetComponent<HealthComponent>();
-        _aSource = GetComponent<AudioSource>();
         _player_effectors = GetComponent<PlayerEffects>();
+        _stats = GetComponent<PlayerStats>();
+    }
+
+    public void InitializeStats(PlayerStatsTracker runStats)
+    {
+        _stats.Initialize(runStats);
         _current_dash_charges = _dash_max_charges;
-        _fireTimer = _fire_cd;
+        _fireTimer = _stats.EffectiveFireCD;
     }
 
     // Update is called once per frame
@@ -88,7 +95,7 @@ public class PlayerBehavior : MonoBehaviour
     {
         // dash code
         if (dashing && (_dashTimer >= _dash_duration || Mathf.Approximately(_dashTimer, _dash_duration))) {
-            dashing = false;
+            EndDash();
         }
 
         if (_dashRequested)
@@ -122,9 +129,9 @@ public class PlayerBehavior : MonoBehaviour
 
             if(fireAction.IsPressed())
             {
-                if (_fireTimer >= _fire_cd / _player_effectors.FiringMult)
+                if (_fireTimer >= _stats.EffectiveFireCD)
                 {
-                    StartCoroutine(FireBullets(_bullets_per_fire));
+                    StartCoroutine(FireBullets(_stats.EffectiveBurstCount));
                     _fireTimer = 0;
                 }
             }
@@ -158,13 +165,21 @@ public class PlayerBehavior : MonoBehaviour
         // acceleration code
         if (Math.Sign(throttle) > 0)
         {
+            throttle_on = true;
             accelerationToAdd = (transform.up * CalculateForwardAcceleration()) + (transform.right * CalculateLateralFriction(transform.right));
+        } else
+        {
+            throttle_on = false;
         }
 
         // active braking
         if (Math.Sign(throttle) < 0)
         {   
+            braking = true;
             accelerationToAdd = -_rb.linearVelocity.normalized * CalculateBraking(_seconds_to_stop);
+        } else
+        {
+            braking = false;
         }
 
         // if no input, constant friction to slow down
@@ -246,6 +261,8 @@ public class PlayerBehavior : MonoBehaviour
         float peak_speed = (_dash_distance - (0.5f * start_speed * _dash_acceleration_duration) - (0.5f * _dash_exit_speed * _dash_deceleration_duration)) / Mathf.Max((_dash_cruise_duration + (0.5f * (_dash_acceleration_duration + _dash_deceleration_duration))), 0.01f);
         _dash_acceleration = (peak_speed - start_speed) / Mathf.Max(_dash_acceleration_duration, 0.01f);
         _dash_deceleration = (peak_speed - _dash_exit_speed) / Mathf.Max(_dash_deceleration_duration, 0.01f);
+
+        DashStarted?.Invoke();
     }
 
     private void ApplyDash(int phase)
@@ -263,6 +280,14 @@ public class PlayerBehavior : MonoBehaviour
         float sidewaysSpeed = Vector2.Dot(_rb.linearVelocity, _dash_lateral_direction);
         float lateralAcceleration = Mathf.Clamp(-sidewaysSpeed / Time.fixedDeltaTime, -_dash_lateral_acceleration_limit, _dash_lateral_acceleration_limit);
         _rb.AddForce(_dash_lateral_direction * lateralAcceleration * _rb.mass, ForceMode2D.Force);
+    }
+
+    private void EndDash()
+    {
+        if (!dashing) return;
+
+        dashing = false;
+        DashEnded?.Invoke();
     }
 
     private IEnumerator DashRecharge()
@@ -283,11 +308,11 @@ public class PlayerBehavior : MonoBehaviour
     {   
         for(int i = 0; i < number_of_bullets; i++)
         {
-            _aSource.PlayOneShot(_shootClip, Random.Range(0.6f, 0.8f));
+            ShotFired?.Invoke();
 
             BulletBehavior newBullet = Instantiate(_bullet, _firing_transform.position, transform.rotation);
-            newBullet.Initialize(transform.up.normalized, _bullet_lifetime, _bullet_speed);
-            yield return new WaitForSeconds(_bullet_cd / _player_effectors.FiringMult);
+            newBullet.Initialize(transform.up.normalized, _stats.EffectiveBulletLifetime, _stats.EffectiveBulletSpeed, _stats.EffectiveBulletDamage);
+            yield return new WaitForSeconds(_stats.EffectiveBurstCD);
         }
     }
 
@@ -300,7 +325,7 @@ public class PlayerBehavior : MonoBehaviour
             {
                 HealthComponent target = other.GetComponentInParent<HealthComponent>();
                 if (target != null) target.TryTakeDamage(1);
-                dashing = false;
+                EndDash();
             }
         }
 

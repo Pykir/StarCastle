@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,8 +8,10 @@ public class PeewMissileBehavior : MonoBehaviour
     [SerializeField] private float _locked_time = 0.2f;
     [SerializeField] private float _launchSpeed = 25f;
     MissileBehavior _missile;
-    DrawTargetLine _line;
     Rigidbody2D _rb;
+
+    public event Action MissileLaunched;
+    public event Action<float> TargetingStarted;
 
     void Initialize(float waitTime)
     {
@@ -19,11 +22,10 @@ public class PeewMissileBehavior : MonoBehaviour
     void Start()
     {
         _missile = GetComponent<MissileBehavior>();
-        _line = GetComponent<DrawTargetLine>();
         _rb = GetComponent<Rigidbody2D>();
 
         _missile.moving = false;
-        _line.Initialize(_tracking_time + _locked_time);
+        TargetingStarted?.Invoke(_tracking_time + _locked_time);
 
         StartCoroutine(ReleaseMissile(_tracking_time, _locked_time));
     }
@@ -44,5 +46,7 @@ public class PeewMissileBehavior : MonoBehaviour
         Vector2 desiredVelocity = direction * _launchSpeed;
 
         _rb.AddForce((desiredVelocity - _rb.linearVelocity) * _rb.mass, ForceMode2D.Impulse);
+
+        MissileLaunched?.Invoke();
     }
 }

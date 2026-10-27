@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DrawTargetCircle : MonoBehaviour
 {
-    private LineRenderer _line;
+    [SerializeField] private LineRenderer _line;
 
     [SerializeField, Min(2)] private int _steps = 100;
     [SerializeField] private float _radius = 1.0f;
@@ -14,14 +14,10 @@ public class DrawTargetCircle : MonoBehaviour
     private int _current_step = 0;
     private float _elapsed_time = 0f;
 
-    void Awake()
-    {
-        _line = GetComponent<LineRenderer>();
-        StartDrawCircle(2.0f, 3f);
-    }
-
     public void StartDrawCircle(float time, float radius)
     {
+        _line.enabled = true;
+
         _time_step = time / Mathf.Max(_steps, 2);
         _radius = radius;
         _line.positionCount = 0;
@@ -32,6 +28,13 @@ public class DrawTargetCircle : MonoBehaviour
         _elapsed_time = 0f;
 
         _drawing = true;
+    }
+
+    public void StopDrawing()
+    {
+        _drawing = false;
+        _line.positionCount = 0;
+        _line.enabled = false;
     }
 
     // Update is called once per frame

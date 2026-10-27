@@ -4,7 +4,7 @@ using UnityEngine;
 public class DamageFeedbackComponent : MonoBehaviour
 {
     private HealthComponent _health;
-    private SpriteRenderer _renderer;
+    [SerializeField] private SpriteRenderer _renderer;
 
     [SerializeField, Min(0.01f)] private float _blinkInterval = 0.1f;
     [SerializeField] private Color _hitTint = Color.white;
@@ -16,13 +16,17 @@ public class DamageFeedbackComponent : MonoBehaviour
     void Awake()
     {
         _health = GetComponent<HealthComponent>();
-        _renderer = GetComponent<SpriteRenderer>();
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
         _baseColor = _renderer.color;
+    }
+
+    void OnEnable()
+    {
         _health.Damaged += OnDamage;
+    }
+
+    void OnDisable()
+    {
+        _health.Damaged -= OnDamage;
     }
 
     // Update is called once per frame

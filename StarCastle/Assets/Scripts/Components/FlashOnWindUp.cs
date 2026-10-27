@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlashOnWindUp : MonoBehaviour
 {
     private HealthComponent _health;
-    private SpriteRenderer _renderer;
+    [SerializeField] private SpriteRenderer _renderer;
 
     [SerializeField] private float _starting_flash_interval = 0.05f;
     [SerializeField] private float _ending_flash_interval = 0.01f;
@@ -21,7 +21,6 @@ public class FlashOnWindUp : MonoBehaviour
     void Start()
     {
         _health = GetComponent<HealthComponent>();
-        _renderer = GetComponent<SpriteRenderer>();
         _baseColor = _renderer.color;
 
         _elapsed_time = 0f;

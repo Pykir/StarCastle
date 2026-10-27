@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector2 _spawnPoint;
     [SerializeField] private int player_lives = 10;
     [SerializeField, Min(0f)] private float _respawn_time = 1;
+    private PlayerStatsTracker _runPlayerStats;
 
     [SerializeField] private CastleBehavior _castle;
     [SerializeField] private Vector2 _castleSpawn = Vector2.zero;
@@ -57,6 +58,8 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        _runPlayerStats = GetComponent<PlayerStatsTracker>();
+        
         if (Instance == null)
         {
             Instance = this;
@@ -120,6 +123,8 @@ public class GameManager : MonoBehaviour
         current_player = Instantiate(_playerShip, _spawnPoint, Quaternion.identity);
         current_player._health.Died += SubtractLife;
         current_player._health.Damaged += LoseHealth;
+        current_player.InitializeStats(_runPlayerStats);
+        
         _gameUI.SetHealth(current_player._health.health);
         _gameUI.SetLives(player_lives);
     }
@@ -196,6 +201,7 @@ public class GameManager : MonoBehaviour
         ClearObjects<BulletBehavior>();
         ClearObjects<TargetedBarrageBehavior>();
         ClearObjects<ExplosionComponent>();
+        ClearObjects<ExplosionVisuals>();
     }
 
     private IEnumerator RespawnCastle()

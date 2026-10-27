@@ -1,15 +1,13 @@
 
 
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class CastleBehavior : MonoBehaviour
 {
     [HideInInspector] public HealthComponent _health;
-
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _cannonFireClip;
-    [SerializeField] private AudioClip _missileLaunchClip;
 
     [SerializeField] public PlayerBehavior _enemyPlayer;
     private Rigidbody2D _target;
@@ -88,10 +86,13 @@ public class CastleBehavior : MonoBehaviour
     private bool FiringBarrage = false;
     private int _difficulty;
     
+    public Action MissileFired;
+    public Action CannonCharging;
+    public Action CannonFired;
+
     void Awake()
     {
         _health = GetComponent<HealthComponent>();
-        _aSource = GetComponent<AudioSource>();
         _movement = GetComponent<CastleMovement>();
     }
 
@@ -180,6 +181,8 @@ public class CastleBehavior : MonoBehaviour
     {
         FiringBullet = true;
 
+        CannonCharging?.Invoke();
+
         yield return new WaitForSeconds(time);
 
         if (_enemyPlayer == null)
@@ -188,7 +191,7 @@ public class CastleBehavior : MonoBehaviour
             yield break;
         }
         
-        _aSource.PlayOneShot(_cannonFireClip, Random.Range(0.8f, 1f));
+        CannonFired?.Invoke();
 
         BulletBehavior newBullet = Instantiate(_bullet, transform.position, Quaternion.identity);
         newBullet.Initialize(_enemyPlayer.GetComponent<Rigidbody2D>().position - (Vector2)transform.position, _bullet_lifetime, current_bullet_speed);
@@ -219,7 +222,7 @@ public class CastleBehavior : MonoBehaviour
 
     void SpawnMissile(Rigidbody2D target, MissileBehavior missile, float lifetime)
     {
-        _aSource.PlayOneShot(_missileLaunchClip, Random.Range(0.8f, 1f));
+        MissileFired?.Invoke();
 
         Vector3 spawnPosition = transform.position + (Vector3)Random.onUnitCircle;
         Vector2 direction = target.position - (Vector2)spawnPosition;

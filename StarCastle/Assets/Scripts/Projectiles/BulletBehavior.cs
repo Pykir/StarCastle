@@ -9,7 +9,7 @@ public class BulletBehavior : MonoBehaviour
     private ContactRules _cr;
     private DestructionComponent _destruction;
     private HealthComponent _health;
-    [SerializeField] private int damage = 1;
+    [SerializeField] private int _damage = 1;
 
     public float _time_left = 0;
     public bool _time_death = false;
@@ -25,10 +25,15 @@ public class BulletBehavior : MonoBehaviour
 
     public void Initialize(float lifetime)
     {
-        Initialize(Vector3.zero, lifetime ,0);
+        Initialize(Vector3.zero, lifetime, 0, _damage);
     }
 
     public void Initialize(Vector3 direction, float lifetime, float speed)
+    {
+        Initialize(direction, lifetime, speed, _damage);
+    }
+
+    public void Initialize(Vector3 direction, float lifetime, float speed, int damage)
     {
         _rb.linearVelocity = ((Vector2)direction).normalized * speed;
         if (lifetime > 0) 
@@ -39,6 +44,8 @@ public class BulletBehavior : MonoBehaviour
         {
             _time_death = false;
         }
+
+        _damage = damage;
     }
 
     private void FixedUpdate()
@@ -63,7 +70,7 @@ public class BulletBehavior : MonoBehaviour
         if (_cr.CanDamage(other))
         {
             HealthComponent target = other.GetComponentInParent<HealthComponent>();
-            if (target != null) target.TryTakeDamage(damage);
+            if (target != null) target.TryTakeDamage(_damage);
         }
 
         if (_cr.CostsDurability(other))

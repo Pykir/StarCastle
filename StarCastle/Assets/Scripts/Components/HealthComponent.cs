@@ -5,8 +5,6 @@ using Random = UnityEngine.Random;
 
 public class HealthComponent : MonoBehaviour
 {
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _hurtClip;
     [SerializeField] public int health = 2;
     [SerializeField] private int _max_forcefields = 0;
     private int _forcefield_count = 0;
@@ -30,11 +28,10 @@ public class HealthComponent : MonoBehaviour
     public event Action<HealthComponent> Damaged;
     public event Action<HealthComponent> ForceFieldAbsorbed;
     public event Action<HealthComponent> WindUpStarted;
+    public event Action<HealthComponent> HitAccepted;
 
     private void Awake()
     {
-        _aSource = GetComponent<AudioSource>();
-
         if (_startWithInvuln)
         {
             _invulnerableUntil = Time.time + _invulnTime;
@@ -71,9 +68,7 @@ public class HealthComponent : MonoBehaviour
             return;
         }
 
-        if (_hurtClip != null) {
-            _aSource.PlayOneShot(_hurtClip, Random.Range(0.8f, 1f));
-        }
+        HitAccepted?.Invoke(this);
 
         health -= damage;
         _invulnerableUntil = Time.time + _invulnTime;

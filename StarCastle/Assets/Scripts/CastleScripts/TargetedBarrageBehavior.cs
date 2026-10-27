@@ -4,21 +4,17 @@ using UnityEngine;
 public class TargetedBarrageBehavior : MonoBehaviour
 {
     [SerializeField] private GameObject _destructionEffect;
-    private DrawTargetCircle _draw;
     private float _radius = 1f;
     private int _damage = 1;
 
-    void Awake()
-    {
-        _draw = GetComponent<DrawTargetCircle>();
-    }
+    public event System.Action<float, float> TargetingStarted;
 
     public void Initialize(float fuse_time, float attack_radius, int damage)
     {
-        _draw.StartDrawCircle(fuse_time, attack_radius);
-
         _radius = attack_radius;
         _damage = damage;
+
+        TargetingStarted?.Invoke(fuse_time, attack_radius);
         StartCoroutine(Attack(fuse_time));
     }
 

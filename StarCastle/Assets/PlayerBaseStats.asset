@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85579802f36db4d5f89248210e286efb, type: 3}
+  m_Name: PlayerBaseStats
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatsDefinition
+  _fire_cd: 1
+  _bullets_per_fire: 2
+  _bullet_cd: 0.05
+  _bullet_speed: 12
+  _bullet_lifetime: 3
+  _bullet_damage: 1

@@ -80,6 +80,18 @@ PrefabInstance:
       propertyPath: _windUpTime
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4346472183208941025, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4346472183208941025, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4346472183208941025, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 4508610953530659057, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: damage
       value: 0

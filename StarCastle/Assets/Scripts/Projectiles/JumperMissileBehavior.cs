@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,18 +9,18 @@ public class JumperMissileBehavior : MonoBehaviour
     [SerializeField] private float _launchSpeed = 10f;
     [SerializeField] private float _jump_distance = 1f;
     MissileBehavior _missile;
-    DrawTargetLine _line;
     Rigidbody2D _rb;
     ProximityFuse _prox;
     HealthComponent _health;
 
     private bool LockedOn = false;
 
+    public event Action MissileLaunched;
+    public event Action<float, Rigidbody2D> TargetingStarted;
+
     void Awake()
     {
         _missile = GetComponent<MissileBehavior>();
-        _line = GetComponent<DrawTargetLine>();
-        _line.enabled = false;
         _rb = GetComponent<Rigidbody2D>();
         _prox = GetComponent<ProximityFuse>();
         _health = GetComponent<HealthComponent>();
@@ -54,13 +55,10 @@ public class JumperMissileBehavior : MonoBehaviour
         LockedOn = true;
         _prox.enabled = false;
         _missile.moving = false; 
-        _line.enabled = true;
-        _line.Initialize(_tracking_time, _missile._target_rb);
+        
+        TargetingStarted?.Invoke(_tracking_time, _missile._target_rb);
 
         yield return new WaitForSeconds(time);
-
-        _line.enabled = false;
-        _line.Reset();
 
         _prox.enabled = true;
 
@@ -73,6 +71,8 @@ public class JumperMissileBehavior : MonoBehaviour
         Vector2 desiredVelocity = direction * _launchSpeed;
 
         _rb.AddForce((desiredVelocity - _rb.linearVelocity) * _rb.mass, ForceMode2D.Impulse);
+
+        MissileLaunched?.Invoke();
 
         yield return new WaitForSeconds(cooldownTime);
 
@@ -98,8 +98,6 @@ public class JumperMissileBehavior : MonoBehaviour
     {
         StopAllCoroutines();
 
-        _line.enabled = false;
-        _line.Reset();
         _prox.enabled = false;
 
         enabled = false;
