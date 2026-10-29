@@ -8,9 +8,8 @@ public class PowerupBehavior : MonoBehaviour
     private float _elapsed = 0;
     private bool consumed = false;
 
-    public void Initialize(int type, float lifetime)
+    public void Initialize(float lifetime)
     {
-        _powerup_type = type;
         _lifetime = lifetime;
         _elapsed = 0;
         consumed = false;

@@ -12,6 +12,8 @@ public class CastleBehavior : MonoBehaviour
     [SerializeField] public PlayerBehavior _enemyPlayer;
     private Rigidbody2D _target;
     private CastleMovement _movement;
+    private CastlePresentation _presentation;
+    [SerializeField] private Transform _firePoint;
 
     [SerializeField] private CastleDefinition _definition;
 
@@ -43,13 +45,14 @@ public class CastleBehavior : MonoBehaviour
     private int _difficulty;
     
     public Action MissileFired;
-    public Action CannonCharging;
+    public Action<float> CannonCharging;
     public Action CannonFired;
 
     void Awake()
     {
         _health = GetComponent<HealthComponent>();
         _movement = GetComponent<CastleMovement>();
+        _presentation = GetComponent<CastlePresentation>();
     }
 
     public void Initialize(int difficulty)
@@ -101,6 +104,8 @@ public class CastleBehavior : MonoBehaviour
         _enemyPlayer = newTarget;
         _target = _enemyPlayer.GetComponent<Rigidbody2D>();
 
+        _presentation._target = _target;
+
         MissileBehavior[] missiles = FindObjectsByType<MissileBehavior>(FindObjectsSortMode.None);
 
         foreach (MissileBehavior missile in missiles)
@@ -138,7 +143,7 @@ public class CastleBehavior : MonoBehaviour
     {
         FiringBullet = true;
 
-        CannonCharging?.Invoke();
+        CannonCharging?.Invoke(time);
 
         yield return new WaitForSeconds(time);
 
@@ -150,8 +155,8 @@ public class CastleBehavior : MonoBehaviour
         
         CannonFired?.Invoke();
 
-        BulletBehavior newBullet = Instantiate(_definition._bullet, transform.position, Quaternion.identity);
-        newBullet.Initialize(_enemyPlayer.GetComponent<Rigidbody2D>().position - (Vector2)transform.position, _definition._bullet_lifetime, current_bullet_speed);
+        BulletBehavior newBullet = Instantiate(_definition._bullet, _firePoint.position, Quaternion.identity);
+        newBullet.Initialize(_firePoint.right, _definition._bullet_lifetime, current_bullet_speed);
         FiringBullet = false;
     }
 
@@ -172,7 +177,7 @@ public class CastleBehavior : MonoBehaviour
         FiringMissile = false;
     }
 
-    void DecrementMissileCount(HealthComponent health)
+    void DecrementMissileCount(HealthComponent health, bool instantRemove)
     {
         current_missile_count--;
     }
@@ -214,6 +219,8 @@ public class CastleBehavior : MonoBehaviour
 
     private void SpawnBarrageOnceAt(Rigidbody2D target)
     {
+        if (target == null) return;
+
         TargetedBarrageBehavior barrage = Instantiate(_definition._barrage, target.position, Quaternion.identity);
         barrage.Initialize(_definition._barrage_fuse_time, _definition._barrage_radius, _definition._barrage_damage);
     }

@@ -12,6 +12,8 @@ public class PlayerPresentation : MonoBehaviour
     [SerializeField] private SpriteRenderer _thrustSpriteR;
     [SerializeField] private SpriteRenderer _dashSprite;
     
+    [SerializeField] private SpriteRenderer _shieldSprite;
+
     private AudioSource _aSource;
     [SerializeField] private AudioClip _fireClip;
     [SerializeField] private AudioClip _hurtClip;
@@ -26,6 +28,7 @@ public class PlayerPresentation : MonoBehaviour
         _health = GetComponent<HealthComponent>();
 
         _aSource = GetComponent<AudioSource>();
+        _shieldSprite.enabled = _health.ForcefieldCount > 0;
     }
 
     private void OnEnable()
@@ -50,7 +53,10 @@ public class PlayerPresentation : MonoBehaviour
 
     private void Update()
     {
-        if (_player.IsEngineFiring)
+        _shieldSprite.enabled = _health.ForcefieldCount > 0;
+        _dashSprite.enabled = _player.IsDashing;
+
+        if (_player.IsEngineFiring && !_player.IsDashing)
         {
             ThrustFlashing();
         } else
@@ -58,20 +64,6 @@ public class PlayerPresentation : MonoBehaviour
             _thrustOn = false;
             _thrustSpriteL.enabled = false;
             _thrustSpriteR.enabled = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-
-        if (_player.IsDashing)
-        {
-            _dashSprite.enabled = true;
-            _thrustSpriteL.enabled = false;
-            _thrustSpriteR.enabled = false;
-        } else
-        {
-            _dashSprite.enabled = false;
         }
     }
 

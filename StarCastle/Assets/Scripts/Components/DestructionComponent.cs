@@ -25,9 +25,15 @@ public class DestructionComponent : MonoBehaviour
             _health.Died -= HandleDeath;
     }
 
-    private void HandleDeath(HealthComponent source)
+    private void HandleDeath(HealthComponent source, bool instantRemove)
     {
-        StartDestruction();
+        if (instantRemove)
+        {
+            StartRemoval();
+        } else
+        {
+           StartDestruction(); 
+        }
     }
 
     public void StartDestruction()
@@ -49,6 +55,21 @@ public class DestructionComponent : MonoBehaviour
                 explosion.Initialize(missile.ExplosionRadius);
             }
         }
+        
+        Destroy(gameObject);
+    }
+
+    public void StartRemoval()
+    {
+        if (IsDestroying) return;
+
+        IsDestroying = true;
+
+        foreach (Collider2D collider in GetComponentsInChildren<Collider2D>())
+        {
+            collider.enabled = false;
+        }
+
         Destroy(gameObject);
     }
 }

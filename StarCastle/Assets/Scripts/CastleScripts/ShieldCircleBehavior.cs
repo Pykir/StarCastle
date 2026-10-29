@@ -147,10 +147,13 @@ public class ShieldCircleBehavior : MonoBehaviour
         mine.transform.localScale = _mine.transform.localScale;
 
         mine.ActivateMine();
-        mine.GetComponent<BulletBehavior>().Initialize(_mineTarget.transform.position - mine.transform.position, _mineLifetime, _mineReleaseBoost);
+        Vector3 launchDirection = _mineTarget != null
+            ? _mineTarget.transform.position - mine.transform.position
+            : mine.transform.right;
+        mine.GetComponent<BulletBehavior>().Initialize(launchDirection, _mineLifetime, _mineReleaseBoost);
     }
 
-    void OnSegmentDied(HealthComponent segment)
+    void OnSegmentDied(HealthComponent segment, bool instantRemove)
     {
         segment.Died -= OnSegmentDied;
         _remainingSegments--;
@@ -164,7 +167,7 @@ public class ShieldCircleBehavior : MonoBehaviour
         }
     }
 
-    void OnMineDied(HealthComponent health)
+    void OnMineDied(HealthComponent health, bool instantRemove)
     {
         for (int i = 0; i < mineArray.Length; i++)
         {

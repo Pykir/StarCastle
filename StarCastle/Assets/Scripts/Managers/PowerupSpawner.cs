@@ -1,11 +1,21 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PowerupSpawner : MonoBehaviour
 {
-    [SerializeField] private PowerupBehavior _powerup;
+    [System.Serializable] public class PowerUpSpawnOption
+    {
+        public String name;
+        public PowerupBehavior prefab;
+
+        [Min(0)] public int weight = 1;
+    }
+    
+    [SerializeField] public PowerUpSpawnOption[] _powerUpOptions;
 
     [SerializeField] private int _max_powerups_spawned = 3;
     [SerializeField] private float _min_spawn_interval = 8;
@@ -69,9 +79,12 @@ public class PowerupSpawner : MonoBehaviour
 
         if (!TryFindEmptyPosition(out Vector3 position)) return;
 
-        PowerupBehavior powerup = Instantiate(_powerup, position, Quaternion.identity);
+        PowerUpSpawnOption powerUpOption = ChooseNextPowerup();
+        if (powerUpOption == null) return;
 
-        powerup.Initialize(Random.Range(0, 2), _powerup_lifetime);
+        PowerupBehavior powerup = Instantiate(powerUpOption.prefab, position, Quaternion.identity);
+
+        powerup.Initialize(_powerup_lifetime);
         _existing_powerups.Add(powerup);
     }
 
@@ -116,5 +129,41 @@ public class PowerupSpawner : MonoBehaviour
         _bottom_bound = _camera.transform.position.y - screenHeight + _bounds_padding;
         _left_bound = _camera.transform.position.x - screenWidth + _bounds_padding;
         _right_bound = _camera.transform.position.x + screenWidth - _bounds_padding;
+    }
+
+    private PowerUpSpawnOption ChooseNextPowerup()
+    {
+        if (_powerUpOptions == null) return null;
+
+        int totalWeight = 0;
+
+        foreach (var option in _powerUpOptions)
+        {
+            if (CanSpawn(option))
+                totalWeight += option.weight;
+        }
+
+        if (totalWeight == 0) return null;
+
+        int roll = Random.Range(0, totalWeight);
+
+        foreach (var option in _powerUpOptions)
+        {
+            if (!CanSpawn(option)) continue;
+
+            if (roll < option.weight)
+                return option;
+
+            roll -= option.weight;
+        }
+
+        return null;
+    }
+
+    private bool CanSpawn(PowerUpSpawnOption option)
+    {
+        return option != null
+            && option.prefab != null
+            && option.weight > 0;
     }
 }

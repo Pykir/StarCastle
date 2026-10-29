@@ -159,7 +159,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void SubtractLife(HealthComponent health)
+    void SubtractLife(HealthComponent health, bool instantRemove)
     {
         _spawnPoint = health.transform.position;
         player_lives--;
@@ -181,9 +181,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RespawnPlayer()
     {
+        yield return new WaitForSeconds(_respawn_time / 2);
         GameState = Utilities.GameState.Respawning;
 
-        yield return new WaitForSecondsRealtime(_respawn_time);
+        yield return new WaitForSecondsRealtime(_respawn_time / 2);
 
         SpawnPlayer();
         TryGiveCastleTarget();
@@ -196,7 +197,7 @@ public class GameManager : MonoBehaviour
         _gameUI.SetHealth(health.health);
     }
 
-    void CastleDestroyed(HealthComponent health)
+    void CastleDestroyed(HealthComponent health, bool instantRemove)
     {
         if (GameState == Utilities.GameState.GameOver ||
         _roundTransitionInProgress ||
@@ -220,7 +221,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(_respawn_time_castle);
 
-        while (GameState == Utilities.GameState.Pause || GameState == Utilities.GameState.Respawning) yield return null;
+        while (_roundTransitionInProgress && GameState != Utilities.GameState.GameOver &&
+            (GameState == Utilities.GameState.Pause || GameState == Utilities.GameState.Respawning || current_player == null))
+        {
+            yield return null;
+        }
 
         if (GameState != Utilities.GameState.Play || !_roundTransitionInProgress) yield break;
 

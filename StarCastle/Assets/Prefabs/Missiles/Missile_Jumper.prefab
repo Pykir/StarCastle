@@ -445,6 +445,10 @@ PrefabInstance:
       propertyPath: _damage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5025010316362286415, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _thrust_flash_speed
+      value: 0.02
+      objectReference: {fileID: 0}
     - target: {fileID: 7715846443878891503, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_LinearDamping
       value: 3

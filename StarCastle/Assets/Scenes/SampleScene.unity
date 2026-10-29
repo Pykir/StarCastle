@@ -1783,7 +1783,7 @@ MonoBehaviour:
   _playerShip: {fileID: 4337513371797581153, guid: 85fe4135e0b6f4dbc8a532a565efbce9, type: 3}
   _spawnPoint: {x: 10, y: 5}
   player_lives: 3
-  _respawn_time: 1
+  _respawn_time: 2
   _castle: {fileID: 1708435856990796739, guid: 7a0cf8bc362094699866d12cea39c7f7, type: 3}
   _castleSpawn: {x: -5, y: -5}
   _respawn_time_castle: 1
@@ -1805,7 +1805,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14168cc7f6514455bf76facbd116583, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerupSpawner
-  _powerup: {fileID: 2931611813089265322, guid: d3b5c2889f6ea4ad1aa4a7f86d21d045, type: 3}
+  _powerUpOptions:
+  - name: Shield
+    prefab: {fileID: 2411493563848451594, guid: 228cd485293924a198f1f356301949e3, type: 3}
+    weight: 1
+  - name: Rapidfire
+    prefab: {fileID: 2247050851336680310, guid: 62ee0fbf4cb5c4d478c51ccf1d6d9560, type: 3}
+    weight: 1
   _max_powerups_spawned: 3
   _min_spawn_interval: 8
   _max_spawn_interval: 15

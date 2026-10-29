@@ -25,7 +25,7 @@ public class HealthComponent : MonoBehaviour
     private float _invulnerableUntil;
     public bool isInvulnerable => Time.time < _invulnerableUntil;
 
-    public event Action<HealthComponent> Died;
+    public event Action<HealthComponent, bool> Died;
     public event Action<HealthComponent> Damaged;
     public event Action<HealthComponent> ForceFieldAbsorbed;
     public event Action<HealthComponent> WindUpStarted;
@@ -55,7 +55,7 @@ public class HealthComponent : MonoBehaviour
             {
                 _windUpProgress = 1.0f;
                 windingUp = false;
-                Died?.Invoke(this);
+                Died?.Invoke(this, false);
             } else
             {
                 _windUpProgress = _elapsed_time / _windUpTime;
@@ -109,8 +109,16 @@ public class HealthComponent : MonoBehaviour
             WindUpStarted?.Invoke(this);
         } else
         {
-            Died?.Invoke(this);
+            Died?.Invoke(this, false);
         }
+    }
+    
+    public void Remove()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        Died?.Invoke(this, true);
     }
 
     public void AddForceFieldCharge (int amount)

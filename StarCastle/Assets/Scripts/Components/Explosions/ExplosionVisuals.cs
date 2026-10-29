@@ -3,16 +3,12 @@ using UnityEngine;
 
 public class ExplosionVisuals : MonoBehaviour
 {
-    
-    [SerializeField] GameObject visual;
-    Transform visualTransform;
 
     private AudioSource _aSource;
     [SerializeField] private AudioClip _explosionClip;
 
     void Awake()
     {
-        visualTransform = visual.transform;
         _aSource = GetComponent<AudioSource>();
     }
 
@@ -24,7 +20,7 @@ public class ExplosionVisuals : MonoBehaviour
 
     public void SetRadius (float radius)
     {
-        visualTransform.localScale = Vector3.one * radius * 2f;
+        transform.localScale = Vector3.one * radius * 2f;
     }
 
     public void PlayDetonation()
