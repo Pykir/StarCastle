@@ -22,6 +22,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private BulletBehavior _bullet;
 
     private int _current_dash_charges = 1;
+    private float _dashRechargeTimer = 0f;
 
     private bool throttle_on = false;
     public bool IsEngineFiring => throttle_on;
@@ -66,7 +67,14 @@ public class PlayerBehavior : MonoBehaviour
         _health.InitializeHealth(_stats.EffectiveMaxHealth);
 
         _current_dash_charges = _stats.EffectiveDashMaxCharges;
+        _dashRechargeTimer = 0f;
         _fireTimer = _stats.EffectiveFireCD;
+    }
+
+    public void RefreshStats(PlayerStatsTracker runStats)
+    {
+        _stats.Initialize(runStats);
+        _health.UpdateMaxHP(_stats.EffectiveMaxHealth);
     }
 
     // Update is called once per frame
@@ -81,6 +89,8 @@ public class PlayerBehavior : MonoBehaviour
     }
     void FixedUpdate()
     {
+        RechargeDash();
+
         // dash code
         if (dashing && (_dashTimer >= _dash_duration || Mathf.Approximately(_dashTimer, _dash_duration))) {
             EndDash();
@@ -246,10 +256,6 @@ public class PlayerBehavior : MonoBehaviour
         _dash_lateral_acceleration_limit = Mathf.Abs(sidewaysSpeed) / Mathf.Max((_dash_duration / 4), 0.01f);
         float _dash_exit_speed = _stats.EffectiveMaxSpeed * 2;
         
-        if(_current_dash_charges >= _stats.EffectiveDashMaxCharges)
-        {
-            StartCoroutine(DashRecharge());
-        }
         _current_dash_charges--;
 
         // calculating cruise speed here
@@ -296,17 +302,28 @@ public class PlayerBehavior : MonoBehaviour
         DashEnded?.Invoke();
     }
 
-    private IEnumerator DashRecharge()
+    private void RechargeDash()
     {
-        yield return new WaitForSeconds(_stats.EffectiveDashRechargeTime);
-        
-        _current_dash_charges++;
-        if(_current_dash_charges < _stats.EffectiveDashMaxCharges)
+        int maxCharges = _stats.EffectiveDashMaxCharges;
+        if (_current_dash_charges >= maxCharges)
         {
-            StartCoroutine(DashRecharge());
-        } else
+            _current_dash_charges = maxCharges;
+            _dashRechargeTimer = 0f;
+            return;
+        }
+
+        _dashRechargeTimer += Time.fixedDeltaTime;
+        float rechargeTime = _stats.EffectiveDashRechargeTime;
+
+        while (_current_dash_charges < maxCharges && _dashRechargeTimer >= rechargeTime)
         {
-            
+            _current_dash_charges++;
+            _dashRechargeTimer -= rechargeTime;
+        }
+
+        if (_current_dash_charges == maxCharges) 
+        {
+            _dashRechargeTimer = 0f;
         }
     }
 

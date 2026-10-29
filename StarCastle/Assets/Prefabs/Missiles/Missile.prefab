@@ -720,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59bd48b3757494c1da07f1f42bafb01f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletBehavior
-  _damage: 1
+  _damage: 0
   _time_left: 0
   _time_death: 0
 --- !u!114 &3013713314510295480

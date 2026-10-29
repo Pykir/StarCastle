@@ -47,6 +47,13 @@ public class HealthComponent : MonoBehaviour
         health = MaxHealth;
     }
 
+    public void UpdateMaxHP(int maxHealth)
+    {
+        int healthDifference = maxHealth - MaxHealth;
+        MaxHealth = Mathf.Max(1, maxHealth);
+        health += healthDifference;
+    }
+
     void FixedUpdate()
     {
         if (windingUp)

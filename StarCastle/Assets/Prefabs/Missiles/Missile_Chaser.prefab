@@ -84,6 +84,10 @@ PrefabInstance:
       propertyPath: _windUpTime
       value: 0.6
       objectReference: {fileID: 0}
+    - target: {fileID: 4508610953530659057, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _damage
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8124796707325694343, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

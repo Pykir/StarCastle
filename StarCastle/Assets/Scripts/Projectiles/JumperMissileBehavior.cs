@@ -41,6 +41,8 @@ public class JumperMissileBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (_missile._target_rb == null) return;
+        
         if(Vector2.Distance(_rb.position, _missile._target_rb.position) < _jump_distance)
         {
             if (!LockedOn)

@@ -33,7 +33,7 @@ MonoBehaviour:
     prefab: {fileID: 8049229978964021980, guid: 68c945a8dbbdd4ca68ab17a86165936a, type: 3}
     weight: 2
     lifetime: 8
-    minimumDifficulty: 0
+    minimumDifficulty: 2
   - name: Shrapnel
     prefab: {fileID: 2198356758525431669, guid: 93f0c191fb0c741daaffea30fb29fdc1, type: 3}
     weight: 2
@@ -43,7 +43,7 @@ MonoBehaviour:
     prefab: {fileID: 8358529965282713046, guid: 2453b2f297dfa490484d0a4fd0e911b7, type: 3}
     weight: 3
     lifetime: 20
-    minimumDifficulty: 0
+    minimumDifficulty: 4
   _max_missiles_multiplier: 0.5
   _starting_missiles_count: 1
   _starting_missile_interval: 6

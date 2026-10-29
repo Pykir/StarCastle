@@ -63,6 +63,8 @@ public class GameManager : MonoBehaviour
     private int _intermissionID = 0;
     public event Action<int> IntermissionStarted;
 
+    private bool _gameOverPending;
+
     void Awake()
     {
         _runPlayerStats = GetComponent<PlayerStatsTracker>();
@@ -169,10 +171,11 @@ public class GameManager : MonoBehaviour
 
         if (player_lives == 0)
         {
-            GameState = Utilities.GameState.GameOver;
-            ClearRound();
+            _gameOverPending = true;
             _roundTransitionInProgress = false;
             _awaitingIntermissionCompletion = false;
+
+            StartCoroutine(FinishGameOver());
             return;
         }
 
@@ -199,10 +202,11 @@ public class GameManager : MonoBehaviour
 
     void CastleDestroyed(HealthComponent health, bool instantRemove)
     {
-        if (GameState == Utilities.GameState.GameOver ||
-        _roundTransitionInProgress ||
-        current_castle == null ||
-        health != current_castle._health)
+        if (_gameOverPending || 
+            GameState == Utilities.GameState.GameOver ||
+            _roundTransitionInProgress ||
+            current_castle == null ||
+            health != current_castle._health)
         {
             return;
         }
@@ -255,6 +259,7 @@ public class GameManager : MonoBehaviour
 
             difficulty++;
             
+            _playerShip.RefreshStats(_runPlayerStats);
             ResetTickingScore();
             SpawnCastle();
             GameState = Utilities.GameState.Play;
@@ -295,4 +300,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator FinishGameOver()
+    {
+        yield return new WaitForSeconds(_respawn_time / 2f);
+
+        GameState = Utilities.GameState.GameOver;
+        ClearRound();
+    }
 }
