@@ -66,9 +66,9 @@ public class CastleBehavior : MonoBehaviour
         current_missile_interval = Mathf.Max(_definition._starting_missile_interval - (difficulty * _definition._missile_interval_decrement), _definition._missile_minimum_interval);
         current_mine_frequency = _definition._starting_mine_frequency + (difficulty * _definition._mine_frequency_multiplier);
         max_mine_count = Mathf.FloorToInt(_definition._shield_shape_sides * current_mine_frequency);
-        current_bullet_speed = Mathf.FloorToInt(_definition._starting_bullet_speed + (_definition._bullet_speed_increment * difficulty));
+        current_bullet_speed = _definition._starting_bullet_speed + (_definition._bullet_speed_increment * difficulty);
         current_barrage_count = Mathf.FloorToInt(_definition._starting_barrage_count + ((difficulty - _definition._barrage_starting_difficulty) * _definition._barrage_count_multiplier));
-        current_barrage_interval = Mathf.Max(Mathf.FloorToInt(_definition._starting_barrage_interval - ((difficulty - _definition._barrage_starting_difficulty) * _definition._barrage_interval_decrement)), _definition._barrage_minimum_interval);
+        current_barrage_interval = Mathf.Max(_definition._starting_barrage_interval - ((difficulty - _definition._barrage_starting_difficulty) * _definition._barrage_interval_decrement), _definition._barrage_minimum_interval);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
