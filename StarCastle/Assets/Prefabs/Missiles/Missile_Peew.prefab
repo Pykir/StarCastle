@@ -154,13 +154,29 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 3489682923638621337, guid: 13ab17400a7f34682afcf3c3cd468928, type: 3}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.9803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9803922
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1419373096754115314, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _torque
-      value: 40
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _max_speed
@@ -177,6 +193,10 @@ PrefabInstance:
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _responseTime
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: steering_gain
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _max_angular_speed

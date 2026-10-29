@@ -12,6 +12,22 @@ PrefabInstance:
       propertyPath: _triggerRadius
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3778172582473642343, guid: 04b480387c60e4e4e94d4fc286d932bc, type: 3}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.5807211
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.631
+      objectReference: {fileID: 0}
     - target: {fileID: 1419373096754115314, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -19,6 +35,18 @@ PrefabInstance:
     - target: {fileID: 1654345395072326387, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _windUpTime
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508610953530659057, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _time_left
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508610953530659057, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _time_death
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6481048800657270647, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_IsActive

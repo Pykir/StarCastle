@@ -57,7 +57,7 @@ public class CastleBehavior : MonoBehaviour
         _difficulty = difficulty;
         _movement?.Initialize(_definition);
 
-        current_shield_count = Mathf.FloorToInt(_definition._shield_starting_count + (difficulty * _definition._shield_amount_multiplier));
+        current_shield_count = Mathf.Min(Mathf.FloorToInt(_definition._shield_starting_count + (difficulty * _definition._shield_amount_multiplier)), _definition._shield_max_count);
         current_bullet_interval = Mathf.Max(_definition._starting_bullet_interval - (difficulty * _definition._bullet_interval_decrement), _definition._bullet_minimum_interval);
         max_missile_count = Mathf.FloorToInt(_definition._starting_missiles_count + (difficulty * _definition._max_missiles_multiplier));
         current_missile_interval = Mathf.Max(_definition._starting_missile_interval - (difficulty * _definition._missile_interval_decrement), _definition._missile_minimum_interval);

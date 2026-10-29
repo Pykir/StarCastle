@@ -1790,7 +1790,7 @@ MonoBehaviour:
   baseTickingScore: 1000
   tickingScoreMultiplier: 500
   scorePerTick: 50
-  difficulty: 5
+  difficulty: 10
   TESTING_DONT_SPAWN_CASTLE: 0
   TESTING_DIFFICULTY: 0
 --- !u!114 &1349402059

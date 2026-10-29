@@ -8,21 +8,81 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -1622329332405708174, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _triggerRadius
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Size.x
+      value: 0.32
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Size.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5522064496995898342, guid: c10329120c2af46bb89322a05eed9950, type: 3}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.b
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.g
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 17261565931576423, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_Color.r
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302552356281122013, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302552356281122013, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1302552356281122013, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.044
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _torque
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _max_speed
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: heading_gain
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _responseTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: steering_gain
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _explosionRadius
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3013713314510295480, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _max_angular_speed
+      value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: _hasWindUp
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4241963780628804788, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
+      propertyPath: _windUpTime
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 8124796707325694343, guid: e41bab5c76d8842b39e03a2a205fc56c, type: 3}
       propertyPath: m_LocalPosition.x

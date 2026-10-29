@@ -14,6 +14,7 @@ public class CastleDefinition : ScriptableObject
     public float _shield_radius_gap = 1f;
     public int _shield_starting_count = 2;
     public float _shield_amount_multiplier = 0.4f;
+    public int _shield_max_count = 5;
 
     [Header("Missiles")]
     public CastleBehavior.MissileSpawnOption[] _missileOptions;
