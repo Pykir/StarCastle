@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2642573250499507745, guid: 77a22502aa91d450eb9215497dc222ad, type: 3}
+      propertyPath: _explosionSound
+      value: 
+      objectReference: {fileID: 6418180475301049370, guid: 88b3f7ee362624d7087c44664fa2b923, type: 2}
     - target: {fileID: 4116324137461595238, guid: 77a22502aa91d450eb9215497dc222ad, type: 3}
       propertyPath: m_Name
       value: ExplosionVisualKabloom

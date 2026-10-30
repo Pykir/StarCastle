@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PowerupBehavior : MonoBehaviour
 {
     [SerializeField] private int _powerup_type;
+    [SerializeField] private AudioResource _pickupSound;
 
     private float _lifetime = 3f;
     private float _elapsed = 0;
@@ -43,6 +45,9 @@ public class PowerupBehavior : MonoBehaviour
         if (other.gameObject.TryGetComponent<PlayerEffects>(out PlayerEffects player))
         {
             consumed = true;
+            
+            OneshotEmitter.Play(_pickupSound, transform.position, 1f, 1f);
+
             if (_powerup_type == 0)
             {
                 player.AddShield(1);

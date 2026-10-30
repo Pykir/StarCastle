@@ -74,7 +74,9 @@ public class DrawTargetLine : MonoBehaviour
             _line.enabled = false;
             if (_elapsed_time >= _current_blink_time)
             {
-                Flash?.Invoke(Mathf.Max(_current_solid_time / _starting_solid_time, 0.01f));
+                float progress = Mathf.Clamp01(_total_time / Mathf.Max(_total_flashing_time, 0.001f));
+                float pitch = Mathf.Lerp(1f, 1.5f, progress);
+                Flash?.Invoke(pitch);
                 flashOn = true;
                 _elapsed_time -= _current_blink_time;
             }

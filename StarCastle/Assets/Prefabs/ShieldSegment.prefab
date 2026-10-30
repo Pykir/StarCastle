@@ -171,3 +171,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestructionComponent
   _destructionEffect: {fileID: 0}
+  _deathSound: {fileID: 8300000, guid: 7e38e63d4476f462fa76b92bbd7feb7f, type: 3}

@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PowerupBehavior
   _powerup_type: 0
+  _pickupSound: {fileID: 8300000, guid: 67e1f26c6d1964d7988a4e03a01bf75e, type: 3}
 --- !u!1 &7626787646620072821
 GameObject:
   m_ObjectHideFlags: 0

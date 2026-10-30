@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 public class PlayerPresentation : MonoBehaviour
@@ -14,20 +15,20 @@ public class PlayerPresentation : MonoBehaviour
     
     [SerializeField] private SpriteRenderer _shieldSprite;
 
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _fireClip;
-    [SerializeField] private AudioClip _hurtClip;
-    [SerializeField] private AudioClip _shieldHitClip;
+    [SerializeField] private AudioResource _fireSound;
+    [SerializeField] private AudioResource _hurtSound;
+    [SerializeField] private AudioResource _shieldHitSound;
+    [SerializeField] private AudioResource _dashSound;
 
     private float _thrust_elapsed = 0;
     private bool _thrustOn = false;
+    [SerializeField] private bool FOR_MAIN_MENU = false;
 
     void Awake()
     {
         _player = GetComponent<PlayerBehavior>();
         _health = GetComponent<HealthComponent>();
 
-        _aSource = GetComponent<AudioSource>();
         _shieldSprite.enabled = _health.ForcefieldCount > 0;
     }
 
@@ -53,12 +54,18 @@ public class PlayerPresentation : MonoBehaviour
 
     private void Update()
     {
+        if (FOR_MAIN_MENU)
+        {
+            ThrustFlashing();
+            return;
+        }
         _shieldSprite.enabled = _health.ForcefieldCount > 0;
         _dashSprite.enabled = _player.IsDashing;
 
         if (_player.IsEngineFiring && !_player.IsDashing)
         {
             ThrustFlashing();
+            ThrustLoopSound();
         } else
         {
             _thrustOn = false;
@@ -69,7 +76,7 @@ public class PlayerPresentation : MonoBehaviour
 
     private void HandleShotFired()
     {
-        _aSource.PlayOneShot(_fireClip, Random.Range(0.6f, 0.8f));
+        OneshotEmitter.Play(_fireSound, transform.position, 1f, 1f);
     }
 
     private void ThrustFlashing()
@@ -92,9 +99,14 @@ public class PlayerPresentation : MonoBehaviour
         _thrust_elapsed += Time.deltaTime;
     }
 
+    private void ThrustLoopSound()
+    {
+        // figure out engine looping sound
+    }
+
     private void HandleDash()
     {
-        // future dash sound here
+        OneshotEmitter.Play(_dashSound, transform.position, Random.Range(0.8f, 1f), Random.Range(0.9f, 1.1f));
     }
 
     private void HandleDashEnd()
@@ -104,17 +116,17 @@ public class PlayerPresentation : MonoBehaviour
 
     private void HandleHitAccepted(HealthComponent source)
     {
-        if (_hurtClip != null)
+        if (_hurtSound != null)
         {
-            _aSource.PlayOneShot(_hurtClip, Random.Range(0.8f, 1f));
+            OneshotEmitter.Play(_hurtSound, transform.position, Random.Range(0.8f, 1f), Random.Range(0.8f, 1f));
         }
     }
 
     private void HandleShieldHit(HealthComponent source)
     {
-        if (_shieldHitClip != null)
+        if (_shieldHitSound != null)
         {
-            _aSource.PlayOneShot(_shieldHitClip, Random.Range(0.8f, 1f));
+            OneshotEmitter.Play(_shieldHitSound, transform.position, Random.Range(0.8f, 1f), Random.Range(0.8f, 1f));
         }
     }
 }

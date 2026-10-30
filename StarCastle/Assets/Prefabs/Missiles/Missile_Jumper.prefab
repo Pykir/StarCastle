@@ -579,8 +579,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JumperMissilePresentation
   _jumpL: {fileID: 8027844005694428403}
   _jumpR: {fileID: 7536032538831016847}
-  _launchClip: {fileID: 8300000, guid: 256b1c50d9b284f0d89a61b3607a6526, type: 3}
-  _beepClip: {fileID: 0}
+  _launchSound: {fileID: 0}
+  _beepSound: {fileID: 8300000, guid: 6c3b21da6a25d4ae0b7cf449d436a783, type: 3}
   _end_color: {r: 0.8470589, g: 0.7490196, b: 0.8470589, a: 1}
 --- !u!82 &-2474627763990814296
 AudioSource:

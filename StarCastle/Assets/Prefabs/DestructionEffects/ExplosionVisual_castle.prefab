@@ -130,6 +130,10 @@ PrefabInstance:
       propertyPath: _explosionClip
       value: 
       objectReference: {fileID: 8300000, guid: 6b9550eec70d945e6a6d60e5b1550340, type: 3}
+    - target: {fileID: 2642573250499507745, guid: 77a22502aa91d450eb9215497dc222ad, type: 3}
+      propertyPath: _explosionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: fc9ce7d7d6e7a4c418a2fe9897763457, type: 3}
     - target: {fileID: 4116324137461595238, guid: 77a22502aa91d450eb9215497dc222ad, type: 3}
       propertyPath: m_Name
       value: ExplosionVisual_castle

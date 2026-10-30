@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class JumperMissilePresentation : MonoBehaviour
 {
@@ -9,9 +10,8 @@ public class JumperMissilePresentation : MonoBehaviour
     [SerializeField] private SpriteRenderer _jumpR;
     private HealthComponent _health;
     
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _launchClip;
-    [SerializeField] private AudioClip _beepClip;
+    [SerializeField] private AudioResource _launchSound;
+    [SerializeField] private AudioResource _beepSound;
 
     private bool _jumping = false;
     private float _targeting_time;
@@ -24,7 +24,6 @@ public class JumperMissilePresentation : MonoBehaviour
         _jumper = GetComponent<JumperMissileBehavior>();
         _line = GetComponent<DrawTargetLine>();
         _health = GetComponent<HealthComponent>();
-        _aSource = GetComponent<AudioSource>();
 
         _start_color = _jumpL.color;
 
@@ -80,15 +79,16 @@ public class JumperMissilePresentation : MonoBehaviour
 
     private void HandleMissileLaunch()
     {
+        OneshotEmitter.Play(_launchSound, transform.position, 1f, Random.Range(0.9f, 1.1f));
+
         _jumping = false;
-        _aSource.PlayOneShot(_launchClip);
         _line.enabled = false;
         _line.Reset();
     }
 
     private void HandleBeep(float pitch)
     {
-        //_aSource.PlayOneShot(_beepClip);
+        OneshotEmitter.Play(_beepSound, transform.position, 0.3f, pitch);
     }
 
     void HandleWindUp(HealthComponent source)

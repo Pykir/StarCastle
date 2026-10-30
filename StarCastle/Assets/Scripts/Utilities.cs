@@ -11,4 +11,12 @@ public static class Utilities
         Respawning,
         GameOver
     }
+
+    public enum MainMenuState
+    {
+        MainMenu,
+        Credits,
+        HowToPlay,
+        Settings
+    }
 }

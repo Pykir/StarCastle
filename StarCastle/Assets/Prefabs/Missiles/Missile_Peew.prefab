@@ -342,8 +342,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1162c85cd209140a489a0d499912ea43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeewMissilePresentation
-  _launchClip: {fileID: 8300000, guid: 256b1c50d9b284f0d89a61b3607a6526, type: 3}
-  _beepClip: {fileID: 0}
+  _launchSound: {fileID: 0}
+  _beepSound: {fileID: 8300000, guid: 6c3b21da6a25d4ae0b7cf449d436a783, type: 3}
 --- !u!82 &5226194978174452032
 AudioSource:
   m_ObjectHideFlags: 0

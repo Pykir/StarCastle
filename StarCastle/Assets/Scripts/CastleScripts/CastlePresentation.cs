@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class CastlePresentation : MonoBehaviour
 {
@@ -20,17 +21,14 @@ public class CastlePresentation : MonoBehaviour
     private Color _charge_indicator_base_color;
     private Color _cannon_base_color; 
     [SerializeField] Color _cannon_charged_color = new Color(1f, 0.25f, 0.05f, 1f);
-    
-    private AudioSource _aSource;
 
-    [SerializeField] AudioClip missileLaunchClip;
-    [SerializeField] AudioClip cannonChargeClip;
-    [SerializeField] AudioClip cannonFireClip;
+    [SerializeField] AudioResource missileLaunchSound;
+    [SerializeField] AudioResource cannonChargeSound;
+    [SerializeField] AudioResource cannonFireSound;
 
     void Awake()
     {
         _castle = GetComponent<CastleBehavior>();
-        _aSource = GetComponent<AudioSource>();
 
         _cannonFire.enabled = false;
         _cannon_base_color = _cannon.color;
@@ -89,7 +87,7 @@ public class CastlePresentation : MonoBehaviour
 
     void HandleMissileLaunch()
     {
-        _aSource.PlayOneShot(missileLaunchClip);
+        OneshotEmitter.Play(missileLaunchSound, transform.position, 0.4f, Random.Range(0.9f, 1.1f));
     }
 
     void HandleCannonCharging(float time)
@@ -118,7 +116,7 @@ public class CastlePresentation : MonoBehaviour
         _cannon.color = _cannon_base_color;
         _charge_indicator.color = Color.clear;
 
-        _aSource.PlayOneShot(cannonFireClip);
+        OneshotEmitter.Play(cannonFireSound, transform.position, 0.8f, Random.Range(0.9f, 1.1f));
         StartCoroutine(CannonFire());
     }
 
@@ -135,6 +133,6 @@ public class CastlePresentation : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        //_aSource.PlayOneShot(cannonChargeClip);
+        OneshotEmitter.Play(cannonChargeSound, transform.position, 0.5f, Random.Range(0.9f, 1.1f));
     }
 }

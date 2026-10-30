@@ -48,6 +48,8 @@ MonoBehaviour:
   _shrapnel: {fileID: 2289363507952257275, guid: 914e4e7eb308b483ba9d5fc5d988938e, type: 3}
   _shrapnel_count: 8
   _shrapnel_speed: 5
+  _shrapnel_lifetime: 1
+  _shrapnelExplosionSound: {fileID: 6418180475301049370, guid: 95136b94f1e6a4b5d851a0ee85aced53, type: 2}
 --- !u!82 &6329837566046370857
 AudioSource:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ public class MenuManager : MonoBehaviour
 
         menuAudioSource = GetComponent<AudioSource>();
         menuAudioSource.ignoreListenerPause = true;
+
     }
 
     // Update is called once per frame
@@ -73,6 +74,20 @@ public class MenuManager : MonoBehaviour
         _isReloading = true;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void ExitGame()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
     void OnDestroy()

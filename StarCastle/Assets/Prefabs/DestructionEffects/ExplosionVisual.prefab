@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 954d4a6402bb64e73954a6bf4d83baaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExplosionVisuals
-  _explosionClip: {fileID: 8300000, guid: f89af588748a3423f8c4c27b5d20d2c8, type: 3}
+  _explosionSound: {fileID: 0}
 --- !u!82 &7956965023791222076
 AudioSource:
   m_ObjectHideFlags: 0

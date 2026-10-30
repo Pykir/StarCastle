@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class BarragePresentation : MonoBehaviour
 {
     private TargetedBarrageBehavior _barrage;
     private DrawTargetCircle _draw;
+
+    [SerializeField] private AudioResource _targetingSound;
 
     private void Awake()
     {
@@ -24,6 +27,11 @@ public class BarragePresentation : MonoBehaviour
 
     private void HandleTargetingStarted(float duration, float radius)
     {
+        if (_targetingSound != null)
+        {
+            OneshotEmitter.Play(_targetingSound, transform.position, 1f, 1f);
+        }
+        
         _draw.StartDrawCircle(duration, radius);
     }
 }

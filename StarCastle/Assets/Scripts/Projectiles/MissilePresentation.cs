@@ -10,6 +10,8 @@ public class MissilePresentation : MonoBehaviour
     private bool _thrustOn = false;
     private float _thrust_elapsed = 0f;
 
+    [SerializeField] private bool FOR_MAIN_MENU = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,6 +21,12 @@ public class MissilePresentation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (FOR_MAIN_MENU)
+        {
+            ThrustFlashing();
+            return;
+        }
+        
         if (_missile.moving)
         {
            ThrustFlashing();

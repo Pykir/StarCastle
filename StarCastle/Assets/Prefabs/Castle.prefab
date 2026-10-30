@@ -235,6 +235,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9088e84308ae4145871108968ef0b72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CastleBehavior
+  FOR_MAIN_MENU: 0
   _health: {fileID: 0}
   _enemyPlayer: {fileID: 0}
   _firePoint: {fileID: 4532783667770357997}
@@ -270,6 +271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DestructionComponent
   _destructionEffect: {fileID: 1751308725856288486, guid: ef9d98e0650dd4fb4a51297e8a14205a, type: 3}
+  _deathSound: {fileID: 8300000, guid: 6b9550eec70d945e6a6d60e5b1550340, type: 3}
 --- !u!114 &-6941952681885918425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -290,9 +292,9 @@ MonoBehaviour:
   _cannonTurnSpeed: 90
   _charge_animation_time: 1
   _cannon_charged_color: {r: 1, g: 1, b: 1, a: 1}
-  missileLaunchClip: {fileID: 8300000, guid: 256b1c50d9b284f0d89a61b3607a6526, type: 3}
-  cannonChargeClip: {fileID: 0}
-  cannonFireClip: {fileID: 8300000, guid: cbb05faf3cf9c40a4b5531888ea1daa5, type: 3}
+  missileLaunchSound: {fileID: 8300000, guid: 256b1c50d9b284f0d89a61b3607a6526, type: 3}
+  cannonChargeSound: {fileID: 8300000, guid: 6019a6dec9d3e4606ba2e30cb3331620, type: 3}
+  cannonFireSound: {fileID: 8300000, guid: ac66c18c3d0954c4d88697c3b3cdcf0b, type: 3}
 --- !u!82 &8331792297480987953
 AudioSource:
   m_ObjectHideFlags: 0

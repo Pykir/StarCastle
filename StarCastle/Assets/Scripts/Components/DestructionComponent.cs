@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class DestructionComponent : MonoBehaviour
 {
     private HealthComponent _health;
     [SerializeField] private GameObject _destructionEffect;
+    [SerializeField] private AudioResource _deathSound;
 
     public bool IsDestroying { get; private set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     private void Awake()
     {
         _health = GetComponent<HealthComponent>();
@@ -54,6 +56,11 @@ public class DestructionComponent : MonoBehaviour
             {
                 explosion.Initialize(missile.ExplosionRadius);
             }
+        }
+
+        if (_deathSound != null)
+        {
+            OneshotEmitter.Play(_deathSound, transform.position, 1f, 1f);
         }
         
         Destroy(gameObject);

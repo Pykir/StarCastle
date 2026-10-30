@@ -1,22 +1,13 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
+using Random = UnityEngine.Random;
 
 public class ExplosionVisuals : MonoBehaviour
 {
-
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _explosionClip;
-
-    void Awake()
-    {
-        _aSource = GetComponent<AudioSource>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private AudioResource _explosionSound;
+    
 
     public void SetRadius (float radius)
     {
@@ -25,10 +16,10 @@ public class ExplosionVisuals : MonoBehaviour
 
     public void PlayDetonation()
     {
-        _aSource.pitch = Random.Range(0.9f, 1.1f);
-        _aSource.volume = Random.Range(0.8f, 1.0f);
-        _aSource.clip = _explosionClip;
-        _aSource.Play();
+        if (_explosionSound != null)
+        {
+            OneshotEmitter.Play(_explosionSound, transform.position, Random.Range(0.8f, 1.0f), Random.Range(0.9f, 1.1f));
+        }
 
         Destroy(gameObject, 1f);
     }

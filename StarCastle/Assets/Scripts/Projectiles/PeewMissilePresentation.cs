@@ -1,18 +1,18 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class PeewMissilePresentation : MonoBehaviour
 {
     private PeewMissileBehavior _dart;
     private DrawTargetLine _line;
-    private AudioSource _aSource;
-    [SerializeField] private AudioClip _launchClip;
-    [SerializeField] private AudioClip _beepClip;
+
+    [SerializeField] private AudioResource _launchSound;
+    [SerializeField] private AudioResource _beepSound;
 
     void Awake()
     {
         _dart = GetComponent<PeewMissileBehavior>();
         _line = GetComponent<DrawTargetLine>();
-        _aSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -38,11 +38,11 @@ public class PeewMissilePresentation : MonoBehaviour
 
     private void HandleMissileLaunch()
     {
-        _aSource.PlayOneShot(_launchClip);
+        OneshotEmitter.Play(_launchSound, transform.position, 1f, Random.Range(0.9f, 1.1f));
     }
 
     private void HandleBeep(float pitch)
     {
-        //_aSource.PlayOneShot(_beepClip);
+        OneshotEmitter.Play(_beepSound, transform.position, 0.3f, pitch);
     }
 }
