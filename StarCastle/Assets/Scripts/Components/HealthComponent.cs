@@ -8,6 +8,7 @@ public class HealthComponent : MonoBehaviour
     public int MaxHealth { get; private set; }
     [SerializeField] public int health = 2;
     [SerializeField] private int _max_forcefields = 0;
+    public int MaxForcefields => _max_forcefields;
     private int _forcefield_count = 0;
     public int ForcefieldCount => _forcefield_count;
 

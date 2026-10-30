@@ -10,6 +10,7 @@ public class PlayerEffects : MonoBehaviour
     private float _temp_fire_mult = 1;
 
     private float _double_fire_time = 0;
+    public float RapidFireTimeRemaining => _double_fire_time;
 
     void Awake()
     {

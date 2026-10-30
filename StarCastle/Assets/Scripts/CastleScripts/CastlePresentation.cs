@@ -98,17 +98,18 @@ public class CastlePresentation : MonoBehaviour
         {
             _pulse_time = _charge_animation_time;
             _elapsed = _charge_animation_time - time;
-            
+            StartCoroutine(PlayCannonChargeSoundIn(time - _charge_animation_time));
         } else
         {
             _pulse_time = time;
             _elapsed = 0;
+            StartCoroutine(PlayCannonChargeSoundIn(_pulse_time));
         }
         
         _charging = true;
         _cannon.color = _cannon_base_color;
 
-        StartCoroutine(PlayCannonChargeSoundIn(_pulse_time));
+        
     }
 
     void HandleCannonFired()

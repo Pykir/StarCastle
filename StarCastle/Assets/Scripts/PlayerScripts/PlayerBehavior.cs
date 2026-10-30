@@ -22,6 +22,7 @@ public class PlayerBehavior : MonoBehaviour
     [SerializeField] private BulletBehavior _bullet;
 
     private int _current_dash_charges = 1;
+    public int CurrentDashCharges => _current_dash_charges;
     private float _dashRechargeTimer = 0f;
 
     private bool throttle_on = false;
@@ -60,6 +61,10 @@ public class PlayerBehavior : MonoBehaviour
         _health = GetComponent<HealthComponent>();
         _stats = GetComponent<PlayerStats>();
     }
+
+    public int MaxDashCharges => _stats.EffectiveDashMaxCharges;
+
+    public float DashRechargeProgress => _stats.EffectiveDashRechargeTime <= 0f ? 1f : Mathf.Clamp01(_dashRechargeTimer / _stats.EffectiveDashRechargeTime);
 
     public void InitializeStats(PlayerStatsTracker runStats)
     {

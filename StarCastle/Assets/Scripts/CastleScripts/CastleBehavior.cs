@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class CastleBehavior : MonoBehaviour
 {
+    [SerializeField] private bool FOR_MAIN_MENU = false;
     [HideInInspector] public HealthComponent _health;
 
     [SerializeField] public PlayerBehavior _enemyPlayer;
@@ -50,6 +51,11 @@ public class CastleBehavior : MonoBehaviour
 
     void Awake()
     {
+        if (FOR_MAIN_MENU)
+        {
+            Initialize(3);
+            return;
+        }
         _health = GetComponent<HealthComponent>();
         _movement = GetComponent<CastleMovement>();
         _presentation = GetComponent<CastlePresentation>();
@@ -87,6 +93,7 @@ public class CastleBehavior : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (FOR_MAIN_MENU) return;
         if(!FiringBullet) StartCoroutine(FireLoop(current_bullet_interval));
         if((current_missile_count < max_missile_count) && !FiringMissile) StartCoroutine(MissileLoop(current_missile_interval + Random.Range(-current_missile_interval/3, current_missile_interval/3)));
         if(!FiringBarrage && (_difficulty >= _definition._barrage_starting_difficulty)) StartCoroutine(BarrageLoop(current_barrage_interval));

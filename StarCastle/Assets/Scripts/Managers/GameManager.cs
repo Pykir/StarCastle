@@ -136,10 +136,9 @@ public class GameManager : MonoBehaviour
     {
         current_player = Instantiate(_playerShip, _spawnPoint, Quaternion.identity);
         current_player._health.Died += SubtractLife;
-        current_player._health.Damaged += LoseHealth;
         current_player.InitializeStats(_runPlayerStats);
         
-        _gameUI.SetHealth(current_player._health.health);
+        _gameUI.SetNewPlayer(current_player);
         _gameUI.SetLives(player_lives);
     }
 
@@ -166,7 +165,7 @@ public class GameManager : MonoBehaviour
         _spawnPoint = health.transform.position;
         player_lives--;
 
-        _gameUI.SetHealth(0);
+        _gameUI.SetNewPlayer(null);
         _gameUI.SetLives(player_lives);
 
         if (player_lives == 0)
@@ -193,11 +192,6 @@ public class GameManager : MonoBehaviour
         TryGiveCastleTarget();
 
         GameState = Utilities.GameState.Play;
-    }
-
-    void LoseHealth(HealthComponent health)
-    {
-        _gameUI.SetHealth(health.health);
     }
 
     void CastleDestroyed(HealthComponent health, bool instantRemove)
@@ -259,7 +253,8 @@ public class GameManager : MonoBehaviour
 
             difficulty++;
             
-            _playerShip.RefreshStats(_runPlayerStats);
+            current_player.RefreshStats(_runPlayerStats);
+
             ResetTickingScore();
             SpawnCastle();
             GameState = Utilities.GameState.Play;
