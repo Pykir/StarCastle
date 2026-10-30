@@ -27,6 +27,19 @@ public class CastleBehavior : MonoBehaviour
     }
 
     private int current_shield_count;
+    public float FullShieldRadius
+    {
+        get
+        {
+            if (current_shield_count <= 0) return 0f;
+
+            float radius = _definition._shield_smallest_radius
+                + (current_shield_count - 1) * _definition._shield_radius_gap;
+            float outerRadius = _definition._shield.GetOuterRadius(_definition._shield_shape_sides, radius);
+            Vector3 scale = transform.lossyScale;
+            return outerRadius * Mathf.Max(Mathf.Abs(scale.x), Mathf.Abs(scale.y));
+        }
+    }
     private float current_bullet_interval;
     private int max_missile_count;
     private int current_missile_count;

@@ -30,6 +30,21 @@ public class ShieldCircleBehavior : MonoBehaviour
 
     public event Action<ShieldCircleBehavior, float> RegenerationRequested;
 
+    public float GetOuterRadius(int sides, float radius)
+    {
+        // Match CreateShieldCircle's segment placement and scale, including the
+        // box corners, regardless of missing segments or the current growth scale.
+        sides = Mathf.Max(3, sides);
+        float halfAngle = Mathf.PI / sides;
+        float segmentScale = radius * Mathf.Sin(2f * halfAngle);
+        BoxCollider2D box = _shieldseg.GetComponent<BoxCollider2D>();
+        Vector3 scale = _shieldseg.transform.localScale;
+        Vector2 extent = new Vector2(Mathf.Abs(box.offset.x) + box.size.x / 2f + box.edgeRadius,
+            Mathf.Abs(box.offset.y) + box.size.y / 2f + box.edgeRadius);
+        extent = Vector2.Scale(extent, new Vector2(Mathf.Abs(scale.x), Mathf.Abs(scale.y))) * segmentScale;
+        return Mathf.Max(radius, new Vector2(radius * Mathf.Cos(halfAngle) + extent.x, extent.y).magnitude);
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {

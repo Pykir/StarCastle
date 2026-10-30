@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CastleBehavior _castle;
     [SerializeField] private Vector2 _castleSpawn = Vector2.zero;
     [SerializeField, Min(0f)] private float _respawn_time_castle = 1;
+    [SerializeField, Min(0f)] private float _spawnClearance = 0.2f;
 
     private PlayerBehavior current_player;
     private CastleBehavior current_castle;
@@ -146,7 +147,24 @@ public class GameManager : MonoBehaviour
     {
         if(TESTING_DONT_SPAWN_CASTLE) return;
 
-        current_castle = Instantiate(_castle, _castleSpawn, Quaternion.identity);
+        StartCoroutine(SpawnCastleWhenSafe());
+    }
+
+    private IEnumerator SpawnCastleWhenSafe()
+    {
+        float castleRadius = GetBodyRadius(_castle);
+        Vector2 spawnPosition;
+        // Only the body must clear the player; the shields expand after spawning.
+        while (current_player == null ||
+            !TryFindSpawnPosition(_castleSpawn, current_player.transform.position,
+                castleRadius + GetBodyRadius(current_player) + _spawnClearance,
+                castleRadius, out spawnPosition))
+        {
+            if (_gameOverPending || GameState == Utilities.GameState.GameOver) yield break;
+            yield return null;
+        }
+
+        current_castle = Instantiate(_castle, spawnPosition, Quaternion.identity);
         current_castle.Initialize(difficulty);
         current_castle._health.Died += CastleDestroyed;
         TryGiveCastleTarget();
@@ -188,10 +206,105 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(_respawn_time / 2);
 
+        Vector2 spawnPosition;
+        float playerRadius = GetBodyRadius(_playerShip);
+        while (!TryFindPlayerRespawn(playerRadius, out spawnPosition))
+        {
+            // Never fall back to an unsafe point if the viewport is too small.
+            yield return null;
+        }
+
+        _spawnPoint = spawnPosition;
         SpawnPlayer();
         TryGiveCastleTarget();
 
         GameState = Utilities.GameState.Play;
+    }
+
+    private bool TryFindPlayerRespawn(float playerRadius, out Vector2 position)
+    {
+        Vector2 castlePosition = current_castle != null
+            ? (Vector2)current_castle.transform.position : _spawnPoint;
+        float exclusionRadius = current_castle != null
+            ? Mathf.Max(current_castle.FullShieldRadius, GetBodyRadius(current_castle))
+                + playerRadius + _spawnClearance
+            : 0f;
+
+        return TryFindSpawnPosition(_spawnPoint, castlePosition, exclusionRadius,
+            playerRadius, out position);
+    }
+
+    private static float GetBodyRadius(Component body)
+    {
+        // Both ship prefabs use polygons. Prefab collider bounds are not reliable
+        // before instantiation, so measure their scaled vertices directly.
+        PolygonCollider2D polygon = body.GetComponent<PolygonCollider2D>();
+        float radius = 0f;
+        for (int path = 0; path < polygon.pathCount; path++)
+        {
+            foreach (Vector2 point in polygon.GetPath(path))
+            {
+                Vector2 scaledPoint = polygon.transform.TransformVector(point + polygon.offset);
+                radius = Mathf.Max(radius, scaledPoint.magnitude);
+            }
+        }
+        return radius;
+    }
+
+    private static bool TryFindSpawnPosition(Vector2 preferred, Vector2 obstacle,
+        float exclusionRadius, float bodyRadius, out Vector2 position)
+    {
+        position = preferred;
+        Camera camera = Camera.main;
+        if (camera == null) return false;
+
+        Vector2 halfSize = new Vector2(camera.orthographicSize * camera.aspect,
+            camera.orthographicSize) - Vector2.one * bodyRadius;
+        if (halfSize.x < 0f || halfSize.y < 0f) return false;
+
+        Vector2 center = camera.transform.position;
+        Rect bounds = Rect.MinMaxRect(center.x - halfSize.x, center.y - halfSize.y,
+            center.x + halfSize.x, center.y + halfSize.y);
+        return TryFindPositionInBounds(preferred, obstacle, exclusionRadius, bounds, out position);
+    }
+
+    private static bool TryFindPositionInBounds(Vector2 preferred, Vector2 obstacle,
+        float exclusionRadius, Rect bounds, out Vector2 position)
+    {
+        position = new Vector2(Mathf.Clamp(preferred.x, bounds.xMin, bounds.xMax),
+            Mathf.Clamp(preferred.y, bounds.yMin, bounds.yMax));
+        float minimumDistanceSquared = exclusionRadius * exclusionRadius;
+        if ((position - obstacle).sqrMagnitude >= minimumDistanceSquared) return true;
+
+        Vector2 direction = preferred - obstacle;
+        float angle = direction.sqrMagnitude > 0f ? Mathf.Atan2(direction.y, direction.x) : 0f;
+        for (int i = 0; i < 32; i++)
+        {
+            float candidateAngle = angle + i * Mathf.PI * 2f / 32f;
+            Vector2 candidate = obstacle + new Vector2(Mathf.Cos(candidateAngle),
+                Mathf.Sin(candidateAngle)) * (exclusionRadius + 0.01f);
+            if (candidate.x >= bounds.xMin && candidate.x <= bounds.xMax &&
+                candidate.y >= bounds.yMin && candidate.y <= bounds.yMax)
+            {
+                position = candidate;
+                return true;
+            }
+        }
+
+        // The farthest point in a rectangle is always a corner. This also finds
+        // narrow safe areas that the angular samples may miss.
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 corner = new Vector2((i & 1) == 0 ? bounds.xMin : bounds.xMax,
+                (i & 2) == 0 ? bounds.yMin : bounds.yMax);
+            if ((corner - obstacle).sqrMagnitude >= minimumDistanceSquared)
+            {
+                position = corner;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     void CastleDestroyed(HealthComponent health, bool instantRemove)
